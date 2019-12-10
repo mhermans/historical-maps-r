@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>NOTES.utf8.md</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Thematic (historical) maps in R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="00_introduction.html">Intro</a>
+</li>
+<li>
+  <a href="01_get_maps.html">1. Get maps</a>
+</li>
+<li>
+  <a href="02_add_data.html">2. Add data</a>
+</li>
+<li>
+  <a href="03_manipulate.html">3. Manipulate</a>
+</li>
+<li>
+  <a href="04_plot.html">4. Plot</a>
+</li>
+<li>
+  <a href="questions_answers.html">Q&amp;A</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<div id="motivating-examples" class="section level2">
+<h2>Motivating examples</h2>
+</div>
+<div id="why-not-r-for-making-maps" class="section level2">
+<h2>Why (not) R for making maps?</h2>
+<p>Why <strong>not</strong> R for making maps?</p>
+<p>Why R for making maps?</p>
+<p>statistical programming language</p>
+</div>
+<div id="spatial-data-as-regular-data" class="section level2">
+<h2>Spatial data as regular data</h2>
+<p>The “tidyverse”</p>
+</div>
+<div id="recommended-libraries" class="section level2">
+<h2>Recommended libraries</h2>
+</div>
+</div>
+<div id="self-learn-suggestions" class="section level1">
+<h1>Self-learn suggestions</h1>
+<ul>
+<li></li>
+</ul>
+</div>
+<div id="get-maps-spatial-data" class="section level1">
+<h1>1 Get maps / spatial data</h1>
+<div id="read-in-railway-tracks" class="section level2">
+<h2>Read in railway tracks</h2>
+</div>
+<div id="read-in-1851-census-borders" class="section level2">
+<h2>Read in 1851 census borders</h2>
+</div>
+</div>
+<div id="add-data" class="section level1">
+<h1>2 Add data</h1>
+</div>
+<div id="manipulate-data" class="section level1">
+<h1>3 Manipulate data</h1>
+</div>
+<div id="plot-maps" class="section level1">
+<h1>4 Plot maps</h1>
+<p>Historic Parishes of England and Wales : an Electronic Map of Boundaries before 1850 with a Gazetteer and Metadata <a href="https://beta.ukdataservice.ac.uk/datacatalogue/doi/?id=4348#!#1" class="uri">https://beta.ukdataservice.ac.uk/datacatalogue/doi/?id=4348#!#1</a></p>
+<p>GIS of the Ancient Parishes of England and Wales, 1500-1850 <a href="https://beta.ukdataservice.ac.uk/datacatalogue/doi/?id=4828#!#1" class="uri">https://beta.ukdataservice.ac.uk/datacatalogue/doi/?id=4828#!#1</a></p>
+<p>1851 England and Wales census registration districts <a href="http://reshare.ukdataservice.ac.uk/852948/" class="uri">http://reshare.ukdataservice.ac.uk/852948/</a></p>
+<p>1851 England and Wales Census registration counties <a href="http://reshare.ukdataservice.ac.uk/852949/" class="uri">http://reshare.ukdataservice.ac.uk/852949/</a></p>
+<p>1851 England and Wales census parishes, townships and places <a href="http://reshare.ukdataservice.ac.uk/852816/" class="uri">http://reshare.ukdataservice.ac.uk/852816/</a></p>
+<p>1851 Census Report Registration District Occupational Data <a href="https://beta.ukdataservice.ac.uk/datacatalogue/studies/study?id=5433#!/details" class="uri">https://beta.ukdataservice.ac.uk/datacatalogue/studies/study?id=5433#!/details</a></p>
+<p>1851 Census Report: County Occupational Data <a href="https://beta.ukdataservice.ac.uk/datacatalogue/studies/study?id=5431#!/details" class="uri">https://beta.ukdataservice.ac.uk/datacatalogue/studies/study?id=5431#!/details</a></p>
+<p>1851 England, Wales and Scotland Rail Lines <a href="https://beta.ukdataservice.ac.uk/datacatalogue/studies/study?id=852991" class="uri">https://beta.ukdataservice.ac.uk/datacatalogue/studies/study?id=852991</a></p>
+<p>Primary, Secondary and Tertiary (PST) Occupational Codes for the 1851 Census Report <a href="https://beta.ukdataservice.ac.uk/datacatalogue/studies/study?id=5434#!/details" class="uri">https://beta.ukdataservice.ac.uk/datacatalogue/studies/study?id=5434#!/details</a></p>
+<p><a href="https://maps.nls.uk/geo/explore/#zoom=7&amp;lat=53.2274&amp;lon=-0.7334&amp;layers=1&amp;b=1" class="uri">https://maps.nls.uk/geo/explore/#zoom=7&amp;lat=53.2274&amp;lon=-0.7334&amp;layers=1&amp;b=1</a> <a href="https://maps.nls.uk/projects/api/" class="uri">https://maps.nls.uk/projects/api/</a> <a href="https://digimap.edina.ac.uk/historic" class="uri">https://digimap.edina.ac.uk/historic</a> <a href="https://github.com/Luqqk/wms-tiles-downloader" class="uri">https://github.com/Luqqk/wms-tiles-downloader</a></p>
+<p><a href="https://geoserver2.nls.uk/geoserver/wfs?service=WFS&amp;version=1.1.0&amp;request=GetFeature&amp;typename=nls:OS_One_Inch_GB_WFS&amp;PropertyName=(the_geom,IMAGEURL,WFS_TITLE)&amp;outputFormat=text/javascript&amp;format_options=callback:loadFeatures&amp;srsname=EPSG:3857&amp;bbox=939258.2035682462,7200979.560689885,1252344.2714243282,7514065.628545967,EPSG:3857&amp;_=1572778103319" class="uri">https://geoserver2.nls.uk/geoserver/wfs?service=WFS&amp;version=1.1.0&amp;request=GetFeature&amp;typename=nls:OS_One_Inch_GB_WFS&amp;PropertyName=(the_geom,IMAGEURL,WFS_TITLE)&amp;outputFormat=text/javascript&amp;format_options=callback:loadFeatures&amp;srsname=EPSG:3857&amp;bbox=939258.2035682462,7200979.560689885,1252344.2714243282,7514065.628545967,EPSG:3857&amp;_=1572778103319</a></p>
+<p>Historisch Leiden in Kaart: Toelichting en handleiding <a href="https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:67498" class="uri">https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:67498</a> <a href="https://www.leidseregioinkaart.nl/kaarten/hlik/" class="uri">https://www.leidseregioinkaart.nl/kaarten/hlik/</a> <a href="https://www.leidseregioinkaart.nl/kaarten/1583/" class="uri">https://www.leidseregioinkaart.nl/kaarten/1583/</a></p>
+<p>pleiades_url &lt;- ‘<a href="http://atlantides.org/downloads/pleiades/kml/pleiades-latest.kmz" class="uri">http://atlantides.org/downloads/pleiades/kml/pleiades-latest.kmz</a>’ download.file(pleiades_url, ‘pleiades-latest.kmz’) pleiades &lt;- st_read(‘pleiades-latest.kmz’)</p>
+<p>ew = st_read(here::here(‘data/england_wales_1851/1851EngWalesParishandPlace.shp’))</p>
+<p>mapview(ew %&gt;% slice(1:500))</p>
+<p>mapview(pleiades %&gt;% slice(1:42, 44:50))</p>
+<p>qtm(pleiades[0:10])</p>
+<p>st_crs(pleiades) = NA mapview(pleiades)</p>
+<p>u_kmz &lt;- “<a href="http://coagisweb.cabq.gov/datadownload/BikePaths.kmz" class="uri">http://coagisweb.cabq.gov/datadownload/BikePaths.kmz</a>” download.file(u_kmz, “BikePaths.kmz”) bikraces &lt;- st_read(“bikeraces.kml”)</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
