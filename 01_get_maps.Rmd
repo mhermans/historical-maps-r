@@ -1,0 +1,42 @@
+---
+title: "Getting your blank maps"
+output: 
+    html_document:
+      df_print: tibble
+      toc: yes
+      toc_float: yes
+---
+
+We need to have "bank maps" to color in. Two sources:
+
+1. Dowloaded file [focus].
+2. Provided through an R-package [see other workshop].
+
+Points of attention:
+
+* We want sf-objects. Frequently already right format, or convert using [`st_as_sf()`](https://r-spatial.github.io/sf/reference/st_as_sf.html).
+* Reduce large map to what you need: filter, crop, or limit.
+* Pay attention to included identifier for merging.
+
+```{r}
+library(dplyr)   # tidyverse datamanipulation library
+library(sf)      # tidyverse spatial features library
+library(janitor) # utility function clean_names()
+library(mapview)
+library(tmap)
+```
+
+
+```{r}
+census1851_districts <- st_read(
+  file.path(Sys.getenv('DATADIR_HIVA_LOCAL'), 'ukda_occuphist_1851/1851_england_wales_census_registration_districts/1851EngWalesRegistrationDistrict.shp')) %>%
+  clean_names() # utility function from library janitor
+
+```
+
+
+```{r}
+
+mapview(census1851_districts)
+```
+

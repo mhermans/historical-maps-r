@@ -1,0 +1,16 @@
+name: "my-website"
+navbar:
+  title: "Thematic (historical) maps in R"
+  left:
+    - text: "Intro"
+      href: 00_introduction.html
+    - text: "1. Get maps"
+      href: 01_get_maps.html
+    - text: "2. Add data"
+      href: 02_add_data.html
+    - text: "3. Manipulate"
+      href: 03_manipulate.html
+    - text: "4. Plot"
+      href: 04_plot.html
+    - text: "Q&A"
+      href: questions_answers.html

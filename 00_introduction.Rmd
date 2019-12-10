@@ -1,0 +1,64 @@
+---
+title: "Introduction"
+output: 
+    html_document:
+      number_sections: no
+      toc: yes
+      toc_float: yes
+---
+
+# Motivating examples
+
+* Examples using R package `tmap`: 
+
+example Belgium https://workshop.mhermans.net/thematic-maps-r/04_plot.html#add_layers_using_objects
+
+example Dynam https://hiva.kuleuven.be/nl/nieuws/nieuwsitems/bruto-jobtoename-en-afname-in-beeld-voor-de-Belgische-regios-en-provincies
+
+example gangen https://mhermans.net/post/mapping-leuvense-gangen/
+
+
+
+# Why (not) R for making maps?
+
+| Why R | Why **not** R |
+| ----- | --------------|
+| | No GUI  
+| statistical programming language | statistical programming language |
+|
+
+
+
+
+# Spatial data as regular data
+
+The "tidyverse"
+
+More info:
+
+* 
+
+
+# Recommended R libraries
+
+* R environment: Rstudio
+
+
+# Self-learn suggestions
+
+
+https://geocompr.robinlovelace.net/adv-map.html
+
+
+# Worked example: rail & industry in 1851 England
+
+Data-source: *The occupational structure of Britain 1379-1911*, [Cambridge Group for the History of Population and Social Structure](https://www.campop.geog.cam.ac.uk/research/occupations/).
+
+Illustrating through exampes common steps for common thematic maps:
+
+1. Get an appropriate blank map.
+2. Load and add "regular" data.
+3. Manipulate (spatial) data.
+4. Plot map.
+
+

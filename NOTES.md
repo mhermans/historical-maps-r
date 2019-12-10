@@ -1,4 +1,57 @@
-https://www.campop.geog.cam.ac.uk/research/occupations/
+
+# Introduction
+
+## Motivating examples
+
+
+
+## Why (not) R for making maps?
+
+Why **not** R for making maps?
+
+Why R for making maps?
+
+
+statistical programming language 
+
+
+## Spatial data as regular data
+
+The "tidyverse"
+
+
+## Recommended libraries
+
+
+# Self-learn suggestions
+
+* 
+
+
+
+
+
+
+# 1 Get maps / spatial data
+
+## Read in railway tracks
+
+
+
+## Read in 1851 census borders
+
+
+# 2 Add data
+
+# 3 Manipulate data
+
+# 4 Plot maps
+
+
+
+
+
+
 
 
 Historic Parishes of England and Wales : an Electronic Map of Boundaries before 1850 with a Gazetteer and Metadata
@@ -43,8 +96,42 @@ https://beta.ukdataservice.ac.uk/datacatalogue/studies/study?id=5434#!/details
 
 
 
+https://maps.nls.uk/geo/explore/#zoom=7&lat=53.2274&lon=-0.7334&layers=1&b=1
+https://maps.nls.uk/projects/api/
+https://digimap.edina.ac.uk/historic
+https://github.com/Luqqk/wms-tiles-downloader
+
+
+https://geoserver2.nls.uk/geoserver/wfs?service=WFS&version=1.1.0&request=GetFeature&typename=nls:OS_One_Inch_GB_WFS&PropertyName=(the_geom,IMAGEURL,WFS_TITLE)&outputFormat=text/javascript&format_options=callback:loadFeatures&srsname=EPSG:3857&bbox=939258.2035682462,7200979.560689885,1252344.2714243282,7514065.628545967,EPSG:3857&_=1572778103319
+
 
 Historisch Leiden in Kaart: Toelichting en handleiding
 https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:67498
 https://www.leidseregioinkaart.nl/kaarten/hlik/
 https://www.leidseregioinkaart.nl/kaarten/1583/
+
+
+
+
+
+pleiades_url <- 'http://atlantides.org/downloads/pleiades/kml/pleiades-latest.kmz'
+download.file(pleiades_url, 'pleiades-latest.kmz')
+pleiades <- st_read('pleiades-latest.kmz')
+
+ew = st_read(here::here('data/england_wales_1851/1851EngWalesParishandPlace.shp'))
+
+mapview(ew %>% slice(1:500))
+
+mapview(pleiades %>%
+  slice(1:42, 44:50))
+
+
+
+qtm(pleiades[0:10])
+
+st_crs(pleiades) = NA
+mapview(pleiades)
+
+u_kmz <- "http://coagisweb.cabq.gov/datadownload/BikePaths.kmz"
+download.file(u_kmz, "BikePaths.kmz")
+bikraces <- st_read("bikeraces.kml")
