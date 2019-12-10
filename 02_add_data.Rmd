@@ -1,0 +1,145 @@
+---
+title: "Adding data"
+output: 
+    html_document:
+      df_print: tibble
+      toc: yes
+      toc_float: yes
+---
+
+We have a (spatial) dataframe with the blank map-information, now we want to add our data-of-interest. Two steps:
+
+1. Read in data-of-interst into R.
+2. Join data-of-interest with the spatial dataframe.
+
+
+```{r, message=FALSE, warning=FALSE}
+# library(BelgiumMaps.StatBel)
+# library(tmap)
+# library(tmaptools)
+# library(sf)
+# library(dplyr)
+# library(readr)
+# library(readxl)
+# library(haven)
+library(tidyr)
+library(readxl)
+```
+
+# Read in data-of-interest
+
+Crucial for linking: have a variable/column in your that contains the appropriate spatial identifier. E.g. Census-identifer, NIS-code, NUTS-code, etc.
+
+How to read in your data depends on the format, three recommended R-packages should cover mosts posibilities: 
+
+* [readr](https://readr.tidyverse.org/): read/write plain text formats such as CSV, TXT, etc.
+* [readxl](https://readxl.tidyverse.org/): read in Excel-files (.xlsx, .xls).
+* [haven](https://haven.tidyverse.org/): read/write datasets from SAS, SPSS, Stata.
+
+```{r, message=FALSE, warning=FALSE}
+# census 1851 datafile: 156.300 records x 11 variables
+census <- read_xlsx(here('data/source/census1851_occupations_count.xlsx'))
+```
+
+```{r, message=FALSE, warning=FALSE}
+# show records 1 to 10
+census %>%
+  slice(1:10)
+```
+
+# Explore data-of-interest
+
+## Occupations & gender
+
+```{r, message=FALSE, warning=FALSE}
+census %>%
+  group_by(sex) %>%
+  tally(occupation_count)
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+census %>%
+  group_by(sex, pst_a_label) %>%
+  tally(occupation_count) %>%
+  spread(sex, n)
+```
+
+```{r, message=FALSE, warning=FALSE}
+census %>%
+  group_by(sex, pst_a_label) %>%
+  tally(occupation_count) %>%
+  spread(sex, n) %>%
+  mutate(pct_women = F / ( F + M) )
+```
+
+## Which county has the most bakers in 1851?
+
+```{r, message=FALSE, warning=FALSE}
+census %>%
+  filter(occupation_label == 'baker') %>%
+  group_by(county_name) %>%
+  tally(occupation_count) %>%
+  arrange(desc(n))
+```
+
+## Percentage secondary-sector workers per district
+
+```{r, message=FALSE, warning=FALSE}
+pop_district <- census %>%
+  group_by(district_id, district_name, pst_a_label) %>%
+  tally(occupation_count) %>%
+  spread(pst_a_label, n)
+
+pop_district <- pop_district %>%
+  mutate(total = primary + secondary + tertiary_dealers + tertiary_sellers + tertiary_services_professions + sector_unspecific + no_occupation) %>%
+  mutate(pct_secondary = secondary / total)
+
+pop_district
+```
+
+
+# Join spatial data and data-of interest 
+
+Recommended options:
+
+1. general dataframe-[join functions from dplyr](https://stat545.com/bit001_dplyr-cheatsheet.html): `left_join()`.
+2. map-specific [helper function from tmaptools](https://rdrr.io/cran/tmaptools/man/append_data.html): `append_data()`.
+
+```{r, eval=FALSE}
+# option 1 (dplyr): 
+library(dplyr)
+data <- left_join(map_data, data_of_interest, by = "identifier")
+data <- left_join(map_data, data_of_interest, by = c("map_identifier" = "data_identifier"))
+```
+
+```{r, eval = FALSE}
+# option 2 (maptools):
+library(tmaptools)
+data <- append_data(map_data, data_of_interest, 
+                    key.shp = "map_identifier", key.data = "data_identifier")
+```
+
+
+# Join spatial districts and census data
+
+```{r, message=FALSE, warning=FALSE}
+districts <- st_read(
+  file.path(here('data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp'))) %>%
+  clean_names()
+```
+
+```{r, message=FALSE, warning=FALSE}
+districts_pop <- districts %>%
+  mutate(cen1 = as.numeric(as.character(cen1))) %>% # make sure identifiers are the same type
+  left_join(pop_district, by = c('cen1' = 'district_id'))
+```
+
+```{r, message=FALSE, warning=FALSE}
+districts_pop
+```
+
+```{r, message=FALSE, warning=FALSE}
+qtm(districts_pop, fill = 'total')
+```
+

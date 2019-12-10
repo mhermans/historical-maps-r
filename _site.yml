@@ -12,5 +12,3 @@ navbar:
       href: 03_manipulate.html
     - text: "4. Plot"
       href: 04_plot.html
-    - text: "Q&A"
-      href: questions_answers.html

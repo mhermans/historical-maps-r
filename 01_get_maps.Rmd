@@ -7,15 +7,18 @@ output:
       toc_float: yes
 ---
 
-We need to have "bank maps" to color in. Two sources:
+We need to have "blank maps" to color in as thematic maps, and optionally spatial data (points, lines) to add. Two sources:
 
-1. Dowloaded file [focus].
+1. Dowloaded file [focus here].
 2. Provided through an R-package [see other workshop].
+
+Various formats possible: Shapefile, GeoJSON, KML, GPX-tracks, etc.
+
+Recommended: Use `st_read` from the `sf` library, as it returns a spatial feature object and is based on [GDAL](https://gdal.org/) : hard to find a format not covered.
 
 Points of attention:
 
-* We want sf-objects. Frequently already right format, or convert using [`st_as_sf()`](https://r-spatial.github.io/sf/reference/st_as_sf.html).
-* Reduce large map to what you need: filter, crop, or limit.
+* We want sf-objects. Frequently already in the right format, if not convert using [`st_as_sf()`](https://r-spatial.github.io/sf/reference/st_as_sf.html).
 * Pay attention to included identifier for merging.
 
 ```{r, message=FALSE, warning=FALSE}
@@ -29,32 +32,30 @@ library(here)
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-raillines_1851 <- st_read(
-  file.path(Sys.getenv('DATADIR_HIVA_LOCAL'), 'ukda_occuphist_1851/1851_england_wales_scotland_rail_lines/1851EngWalesScotRail_Lines.shp')) %>%
+raillines <- st_read(here('data/source/census_1851_raillines/1851EngWalesScotRail_Lines.shp')) %>%
   clean_names()
 ```
 
 ```{r}
-mapview(raillines_1851)
+mapview(raillines)
 ```
 
 ```{r}
-qtm(raillines_1851)
+qtm(raillines)
 ```
 
 
 ```{r, message=FALSE, warning=FALSE}
-census1851_districts <- st_read(
-  file.path(Sys.getenv('DATADIR_HIVA_LOCAL'), 'ukda_occuphist_1851/1851_england_wales_census_registration_districts/1851EngWalesRegistrationDistrict.shp')) %>%
+districts <- st_read(here('data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp')) %>%
   clean_names()
 ```
 
 
 ```{r, message=FALSE, warning=FALSE}
-mapview(census1851_districts)
+mapview(districts)
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-qtm(census1851_districts)
+qtm(districts)
 ```
 

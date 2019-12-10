@@ -11,19 +11,28 @@ library(janitor)
 library(dplyr)
 library(stringr)
 library(tidyr)
+library(openxlsx)
+
+# read in 1851 source files
 
 census1851_districts <- st_read(
-  file.path(Sys.getenv('DATADIR_HIVA_LOCAL'), 'ukda_occuphist_1851/1851_england_wales_census_registration_districts/1851EngWalesRegistrationDistrict.shp')) %>%
+  file.path(
+    Sys.getenv('DATADIR_HIVA_LOCAL'), 
+    'ukda_occuphist_1851/1851_england_wales_census_registration_districts/1851EngWalesRegistrationDistrict.shp')) %>%
   verify(dim(.) == c(1194, 7)) %>%
   clean_names()
 
 raillines_1851 <- st_read(
-  file.path(Sys.getenv('DATADIR_HIVA_LOCAL'), 'ukda_occuphist_1851/1851_england_wales_scotland_rail_lines/1851EngWalesScotRail_Lines.shp')) %>%
+  file.path(
+    Sys.getenv('DATADIR_HIVA_LOCAL'),
+    'ukda_occuphist_1851/1851_england_wales_scotland_rail_lines/1851EngWalesScotRail_Lines.shp')) %>%
   verify(dim(.) == c(1431, 3)) %>%
   clean_names()
 
 census1851_pop <- read_tsv(
-  file.path(Sys.getenv('DATADIR_HIVA_LOCAL'), 'ukda_occuphist_1851/ukda_5433_1851_census_report_registration_district_occupational_data/tab/1851_cen_men_women_20_over_eng.tab'),
+  file.path(
+    Sys.getenv('DATADIR_HIVA_LOCAL'),
+    'ukda_occuphist_1851/ukda_5433_1851_census_report_registration_district_occupational_data/tab/1851_cen_men_women_20_over_eng.tab'),
   skip = 1, # double header row
   col_types = cols(
     regcounty = col_character(),
@@ -71,9 +80,6 @@ census1851_occp <- bind_rows(
       n = col_double() ))
 )
 
-census1851_occp <- census1851_occp %>%
-  filter(sex != 'sex')
-
 census1851_occup_mapping <- read_tsv(file.path(
   Sys.getenv('DATADIR_HIVA_LOCAL'), 
   'ukda_occuphist_1851/ukda_5434_1851_pst_occ_code/tab/pst_occ_code_1851.tab'),
@@ -98,6 +104,10 @@ census1851_occup_mapping <- read_tsv(file.path(
   clean_names() %>%
   mutate(original_occupation = str_to_lower(original_occupation))
 
+# clean/remove 1 (header?) row
+census1851_occp <- census1851_occp %>%
+  filter(sex != 'sex')
+
 census1851_occp <- census1851_occp %>%
   mutate(occ = str_to_lower(occ))
 
@@ -105,6 +115,35 @@ census1851_occp <- census1851_occp %>%
   left_join(
     census1851_occup_mapping %>% select(original_occupation, pst1a, pst1b, pst1c, pst1d),
     by = c('occ' = 'original_occupation'))
+
+census1851_occp_clean <- census1851_occp %>%
+  rename(
+    county_name = regcounty,
+    district_name = rdname,
+    district_id = rd_id,
+    sex = sex,
+    occupation_label = occ,
+    occupation_count = n,
+    pst_a_code = pst1a,
+    pst_b_code = pst1b,
+    pst_c_code = pst1c,
+    pst_d_code = pst1d) %>%
+  mutate(pst_a_label = case_when(
+    pst_a_code == 1 ~ 'primary',
+    pst_a_code == 2 ~ 'secondary',
+    pst_a_code == 3 ~ 'tertiary_dealers',
+    pst_a_code == 4 ~ 'tertiary_sellers',
+    pst_a_code == 5 ~ 'tertiary_services_professions',
+    pst_a_code == 90 ~ 'sector_unspecific',
+    pst_a_code == 99 ~ 'no_occupation',
+  ))
+
+
+census1851_occp_clean %>%
+  verify(dim(.) == c(156300, 11)) %>%
+  write.xlsx(here::here('data/source/census1851_occupations_count.xlsx'))
+
+  
 
 # census1851_occp <- census1851_occp %>%
 #   mutate(rd_id = as.character(rd_id)) %>%

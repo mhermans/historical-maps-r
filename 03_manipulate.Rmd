@@ -1,0 +1,89 @@
+---
+title: "Manipulating (spatial) data"
+output: 
+    html_document:
+        toc: TRUE
+        toc_float: TRUE
+---
+
+Two types of data-manipulation: 
+
+1. spatial data-manipulations: spatial cropping, union, aggregation, etc.
+2. 'regular' data-manipulations: combine categories, calculate percentage of population, etc.
+
+... but same syntax and in **one** dataframe.
+
+PS: always an option, do (2) in SAS, Stata, etc. before reading and joining data (previous step).
+
+```{r, message=FALSE, warning=FALSE}
+# library(rgdal)      # provides readOGR() to read in spatial data
+# library(BelgiumMaps.StatBel)
+# library(sf)
+# library(tmap)       # plot thematic map with qtm()
+# library(dplyr)      # general data-manipulation
+# library(stringr)    # string-operations str_sub()
+# library(readr)      # read CSV-file read_csv()
+```
+
+
+```{r}
+# load spatial data
+raillines <- st_read(here('data/source/census_1851_raillines/1851EngWalesScotRail_Lines.shp')) %>%
+  clean_names()
+
+# load data-of-interest
+
+# join spatial data and data-of-interest
+```
+
+
+# Data-manipulation
+
+```{r}
+districts_pop <- districts_pop %>%
+  mutate(pct_prof = tertiary_services_professions / total)
+```
+
+```{r}
+mapview(districts_pop, zcol = 'pct_prof')
+```
+
+
+# Spatial manipulation
+
+```{r}
+divisions <- districts_pop %>%
+  group_by(r_div) %>%
+  tally()
+```
+
+```{r}
+divisions
+```
+
+
+
+
+
+```{r}
+mapview(divisions)
+```
+
+# Spatial / data-manipulation: select Manchester-region
+
+```{r}
+nwestern <- districts_pop %>%
+  filter(r_div == 'NORTH WESTERN')
+```
+
+```{r}
+mapview(nwestern, zcol = 'pct_secondary') + raillines
+```
+
+```{r}
+qtm(nwestern, fill = 'pct_secondary')
+```
+
+```{r}
+qtm(nwestern, fill = 'pct_secondary')
+```

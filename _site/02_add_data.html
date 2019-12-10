@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Adding data</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Thematic (historical) maps in R</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="00_introduction.html">Intro</a>
+</li>
+<li>
+  <a href="01_get_maps.html">1. Get maps</a>
+</li>
+<li>
+  <a href="02_add_data.html">2. Add data</a>
+</li>
+<li>
+  <a href="03_manipulate.html">3. Manipulate</a>
+</li>
+<li>
+  <a href="04_plot.html">4. Plot</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Adding data</h1>
+
+</div>
+
+
+<p>We have a (spatial) dataframe with the blank map-information, now we want to add our data-of-interest. Two steps:</p>
+<ol style="list-style-type: decimal">
+<li>Read in data-of-interst into R.</li>
+<li>Join data-of-interest with the spatial dataframe.</li>
+</ol>
+<pre class="r"><code># library(BelgiumMaps.StatBel)
+# library(tmap)
+# library(tmaptools)
+# library(sf)
+# library(dplyr)
+# library(readr)
+# library(readxl)
+# library(haven)
+library(tidyr)
+library(readxl)</code></pre>
+<div id="read-in-data-of-interest" class="section level1">
+<h1>Read in data-of-interest</h1>
+<p>Crucial for linking: have a variable/column in your that contains the appropriate spatial identifier. E.g. Census-identifer, NIS-code, NUTS-code, etc.</p>
+<p>How to read in your data depends on the format, three recommended R-packages should cover mosts posibilities:</p>
+<ul>
+<li><a href="https://readr.tidyverse.org/">readr</a>: read/write plain text formats such as CSV, TXT, etc.</li>
+<li><a href="https://readxl.tidyverse.org/">readxl</a>: read in Excel-files (.xlsx, .xls).</li>
+<li><a href="https://haven.tidyverse.org/">haven</a>: read/write datasets from SAS, SPSS, Stata.</li>
+</ul>
+<pre class="r"><code># census 1851 datafile: 156.300 records x 11 variables
+census &lt;- read_xlsx(here(&#39;data/source/census1851_occupations_count.xlsx&#39;))</code></pre>
+<pre class="r"><code># show records 1 to 10
+census %&gt;%
+  slice(1:10)</code></pre>
+<pre><code>## # A tibble: 10 x 11
+##    county_name district_name district_id sex   occupation_label
+##    &lt;chr&gt;       &lt;chr&gt;               &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;           
+##  1 Bedfordshi… Ampthill              181 F     agricultural la…
+##  2 Bedfordshi… Ampthill              181 F     annuitant       
+##  3 Bedfordshi… Ampthill              181 F     baker           
+##  4 Bedfordshi… Ampthill              181 F     blacksmith      
+##  5 Bedfordshi… Ampthill              181 F     butchers wife   
+##  6 Bedfordshi… Ampthill              181 F     charwoman       
+##  7 Bedfordshi… Ampthill              181 F     cowkeeper, milk…
+##  8 Bedfordshi… Ampthill              181 F     dau, granddau, …
+##  9 Bedfordshi… Ampthill              181 F     domestic servan…
+## 10 Bedfordshi… Ampthill              181 F     domestic servan…
+## # … with 6 more variables: occupation_count &lt;dbl&gt;, pst_a_code &lt;dbl&gt;,
+## #   pst_b_code &lt;dbl&gt;, pst_c_code &lt;dbl&gt;, pst_d_code &lt;dbl&gt;,
+## #   pst_a_label &lt;chr&gt;</code></pre>
+</div>
+<div id="explore-data-of-interest" class="section level1">
+<h1>Explore data-of-interest</h1>
+<div id="occupations-gender" class="section level2">
+<h2>Occupations &amp; gender</h2>
+<pre class="r"><code>census %&gt;%
+  group_by(sex) %&gt;%
+  tally(occupation_count)</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   sex         n
+##   &lt;chr&gt;   &lt;dbl&gt;
+## 1 F     4775509
+## 2 M     4399377</code></pre>
+<pre class="r"><code>census %&gt;%
+  group_by(sex, pst_a_label) %&gt;%
+  tally(occupation_count) %&gt;%
+  spread(sex, n)</code></pre>
+<pre><code>## # A tibble: 7 x 3
+##   pst_a_label                         F       M
+##   &lt;chr&gt;                           &lt;dbl&gt;   &lt;dbl&gt;
+## 1 no_occupation                 2698848  120789
+## 2 primary                        285660 1298589
+## 3 secondary                      762586 1730702
+## 4 sector_unspecific                5001  249180
+## 5 tertiary_dealers                18140   87801
+## 6 tertiary_sellers                47306  119377
+## 7 tertiary_services_professions  957968  792939</code></pre>
+<pre class="r"><code>census %&gt;%
+  group_by(sex, pst_a_label) %&gt;%
+  tally(occupation_count) %&gt;%
+  spread(sex, n) %&gt;%
+  mutate(pct_women = F / ( F + M) )</code></pre>
+<pre><code>## # A tibble: 7 x 4
+##   pst_a_label                         F       M pct_women
+##   &lt;chr&gt;                           &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;
+## 1 no_occupation                 2698848  120789    0.957 
+## 2 primary                        285660 1298589    0.180 
+## 3 secondary                      762586 1730702    0.306 
+## 4 sector_unspecific                5001  249180    0.0197
+## 5 tertiary_dealers                18140   87801    0.171 
+## 6 tertiary_sellers                47306  119377    0.284 
+## 7 tertiary_services_professions  957968  792939    0.547</code></pre>
+</div>
+<div id="which-county-has-the-most-bakers-in-1851" class="section level2">
+<h2>Which county has the most bakers in 1851?</h2>
+<pre class="r"><code>census %&gt;%
+  filter(occupation_label == &#39;baker&#39;) %&gt;%
+  group_by(county_name) %&gt;%
+  tally(occupation_count) %&gt;%
+  arrange(desc(n))</code></pre>
+<pre><code>## # A tibble: 42 x 2
+##    county_name               n
+##    &lt;chr&gt;                 &lt;dbl&gt;
+##  1 London                10321
+##  2 Lancashire             3503
+##  3 Kent                   1681
+##  4 Devonshire             1552
+##  5 Hampshire              1364
+##  6 Somerset               1353
+##  7 Gloucestershire        1338
+##  8 Essex                  1214
+##  9 Warwickshire           1180
+## 10 Yorkshire West Riding  1141
+## # … with 32 more rows</code></pre>
+</div>
+<div id="percentage-secondary-sector-workers-per-district" class="section level2">
+<h2>Percentage secondary-sector workers per district</h2>
+<pre class="r"><code>pop_district &lt;- census %&gt;%
+  group_by(district_id, district_name, pst_a_label) %&gt;%
+  tally(occupation_count) %&gt;%
+  spread(pst_a_label, n)
+
+pop_district &lt;- pop_district %&gt;%
+  mutate(total = primary + secondary + tertiary_dealers + tertiary_sellers + tertiary_services_professions + sector_unspecific + no_occupation) %&gt;%
+  mutate(pct_secondary = secondary / total)
+
+pop_district</code></pre>
+<pre><code>## # A tibble: 576 x 11
+##    district_id district_name no_occupation primary secondary
+##          &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;
+##  1           1 Kensington            21466    2274     12367
+##  2           2 Chelsea               10610     529      7884
+##  3           3 St George Ha…         12506     256      8937
+##  4           4 Westminster           12973     343     10535
+##  5           5 St Martins-i…          4187      72      4198
+##  6           6 St James Wes…          5795     123      7619
+##  7           7 Marylebone            27911    1140     24945
+##  8           8 Hampstead              1860     293      1009
+##  9           9 Pancras               31016     943     28843
+## 10          10 Islington             18193     933     13589
+## # … with 566 more rows, and 6 more variables: sector_unspecific &lt;dbl&gt;,
+## #   tertiary_dealers &lt;dbl&gt;, tertiary_sellers &lt;dbl&gt;,
+## #   tertiary_services_professions &lt;dbl&gt;, total &lt;dbl&gt;, pct_secondary &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div id="join-spatial-data-and-data-of-interest" class="section level1">
+<h1>Join spatial data and data-of interest</h1>
+<p>Recommended options:</p>
+<ol style="list-style-type: decimal">
+<li>general dataframe-<a href="https://stat545.com/bit001_dplyr-cheatsheet.html">join functions from dplyr</a>: <code>left_join()</code>.</li>
+<li>map-specific <a href="https://rdrr.io/cran/tmaptools/man/append_data.html">helper function from tmaptools</a>: <code>append_data()</code>.</li>
+</ol>
+<pre class="r"><code># option 1 (dplyr): 
+library(dplyr)
+data &lt;- left_join(map_data, data_of_interest, by = &quot;identifier&quot;)
+data &lt;- left_join(map_data, data_of_interest, by = c(&quot;map_identifier&quot; = &quot;data_identifier&quot;))</code></pre>
+<pre class="r"><code># option 2 (maptools):
+library(tmaptools)
+data &lt;- append_data(map_data, data_of_interest, 
+                    key.shp = &quot;map_identifier&quot;, key.data = &quot;data_identifier&quot;)</code></pre>
+</div>
+<div id="join-spatial-districts-and-census-data" class="section level1">
+<h1>Join spatial districts and census data</h1>
+<pre class="r"><code>districts &lt;- st_read(
+  file.path(here(&#39;data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp&#39;))) %&gt;%
+  clean_names()</code></pre>
+<pre><code>## Reading layer `1851EngWalesRegistrationDistrict&#39; from data source `/home/rstudio/projects/historical-maps-r/data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp&#39; using driver `ESRI Shapefile&#39;
+## Simple feature collection with 1194 features and 6 fields
+## geometry type:  POLYGON
+## dimension:      XY
+## bbox:           xmin: 87019.07 ymin: 7067.26 xmax: 655747.5 ymax: 657473.5
+## epsg (SRID):    NA
+## proj4string:    +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +datum=OSGB36 +units=m +no_defs</code></pre>
+<pre class="r"><code>districts_pop &lt;- districts %&gt;%
+  mutate(cen1 = as.numeric(as.character(cen1))) %&gt;% # make sure identifiers are the same type
+  left_join(pop_district, by = c(&#39;cen1&#39; = &#39;district_id&#39;))</code></pre>
+<pre class="r"><code>districts_pop</code></pre>
+<pre><code>## # A tibble: 1,198 x 17
+##     cen1 r_dist r_cty r_divno r_div r_ctry district_name no_occupation
+##    &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt;  &lt;chr&gt;                 &lt;dbl&gt;
+##  1     3 ST GE… LOND… I       LOND… ENGLA… St George Ha…         12506
+##  2     6 ST. J… LOND… I       LOND… ENGLA… St James Wes…          5795
+##  3     7 MARYL… LOND… I       LOND… ENGLA… Marylebone            27911
+##  4     8 HAMPS… LOND… I       LOND… ENGLA… Hampstead              1860
+##  5    10 ISLIN… LOND… I       LOND… ENGLA… Islington             18193
+##  6    11 HACKN… LOND… I       LOND… ENGLA… Hackney               10897
+##  7    12 ST GI… LOND… I       LOND… ENGLA… St Giles               9990
+##  8    14 HOLBO… LOND… I       LOND… ENGLA… Holborn                8536
+##  9    16 ST LU… LOND… I       LOND… ENGLA… St Luke                9881
+## 10    18 WEST … LOND… I       LOND… ENGLA… West London            4836
+## # … with 1,188 more rows, and 9 more variables: primary &lt;dbl&gt;,
+## #   secondary &lt;dbl&gt;, sector_unspecific &lt;dbl&gt;, tertiary_dealers &lt;dbl&gt;,
+## #   tertiary_sellers &lt;dbl&gt;, tertiary_services_professions &lt;dbl&gt;,
+## #   total &lt;dbl&gt;, pct_secondary &lt;dbl&gt;, geometry &lt;POLYGON [m]&gt;</code></pre>
+<pre class="r"><code>qtm(districts_pop, fill = &#39;total&#39;)</code></pre>
+<p><img src="02_add_data_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
