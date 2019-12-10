@@ -18,25 +18,43 @@ Points of attention:
 * Reduce large map to what you need: filter, crop, or limit.
 * Pay attention to included identifier for merging.
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
+# load general packages used below
 library(dplyr)   # tidyverse datamanipulation library
 library(sf)      # tidyverse spatial features library
 library(janitor) # utility function clean_names()
 library(mapview)
 library(tmap)
+library(here)
+```
+
+```{r, message=FALSE, warning=FALSE}
+raillines_1851 <- st_read(
+  file.path(Sys.getenv('DATADIR_HIVA_LOCAL'), 'ukda_occuphist_1851/1851_england_wales_scotland_rail_lines/1851EngWalesScotRail_Lines.shp')) %>%
+  clean_names()
+```
+
+```{r}
+mapview(raillines_1851)
+```
+
+```{r}
+qtm(raillines_1851)
 ```
 
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 census1851_districts <- st_read(
   file.path(Sys.getenv('DATADIR_HIVA_LOCAL'), 'ukda_occuphist_1851/1851_england_wales_census_registration_districts/1851EngWalesRegistrationDistrict.shp')) %>%
-  clean_names() # utility function from library janitor
-
+  clean_names()
 ```
 
 
-```{r}
-
+```{r, message=FALSE, warning=FALSE}
 mapview(census1851_districts)
+```
+
+```{r, message=FALSE, warning=FALSE}
+qtm(census1851_districts)
 ```
 
