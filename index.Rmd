@@ -3,7 +3,7 @@ title: "Making thematic (historical) maps with R"
 author: "Maarten Hermans"
 ---
 
-This online walkthrough accompanies a 2h "show-and-tell" workshop on **making thematic (historical) maps in R**. 
+This online walkthrough accompanies a 2h "show-and-tell" workshop on **making thematic (historical) maps with R**. 
 
 The worked examples demonistrate the quickest routes for getting your data in R and on a map, with a focus on showing how spatial data can be integrated in a familiar [tidyverse data-analysis workflow](https://www.tidyverse.org/). 
 
@@ -40,6 +40,7 @@ Opening the file `thematic_maps_with_r.Rproj` in the downloaded folder launches 
 
 ```{r, eval=FALSE}
 install.packages('rmarkdown')
+install.packages('here')
 install.packages('sf')
 install.packages('tmap')
 install.packages('dplyr')

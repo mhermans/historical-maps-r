@@ -16,74 +16,74 @@ Two types of data-manipulation:
 PS: always an option, do (2) in SAS, Stata, etc. before reading and joining data (previous step).
 
 ```{r, message=FALSE, warning=FALSE}
-# library(rgdal)      # provides readOGR() to read in spatial data
-# library(BelgiumMaps.StatBel)
-# library(sf)
-# library(tmap)       # plot thematic map with qtm()
-# library(dplyr)      # general data-manipulation
-# library(stringr)    # string-operations str_sub()
-# library(readr)      # read CSV-file read_csv()
+library(here)
+library(sf)
+library(tmap)
+library(dplyr)
+library(readxl)
+library(mapview)
 ```
 
 
-```{r}
-# load spatial data
-raillines <- st_read(here('data/source/census_1851_raillines/1851EngWalesScotRail_Lines.shp')) %>%
-  clean_names()
+```{r, message=FALSE, warning=FALSE, results = 'hide'}
+# (1) load spatial data
+raillines <- st_read(here('data/source/census_1851_raillines/1851EngWalesScotRail_Lines.shp'))
 
-# load data-of-interest
+districts_spatial <- st_read(here('data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp')) %>%
+  mutate(CEN1 = as.numeric(as.character(CEN1))) # make sure identifiers are the same type
 
-# join spatial data and data-of-interest
+# (2) load and add data-of-interest
+districts_data <- read_excel(here('data/census1851_districts_count.xlsx'))
+districts <- left_join(districts_spatial, districts_data, by = c('CEN1' = 'district_id'))
 ```
 
 
-# Data-manipulation
+# Data-manipulation on joint dataset
 
-```{r}
-districts_pop <- districts_pop %>%
+```{r, message=FALSE, warning=FALSE}
+districts <- districts %>%
   mutate(pct_prof = tertiary_services_professions / total)
 ```
 
-```{r}
-mapview(districts_pop, zcol = 'pct_prof')
+```{r, message=FALSE, warning=FALSE}
+mapview(districts, zcol = 'pct_prof')
 ```
 
 
-# Spatial manipulation
+# Spatial manipulation on joint dataset
 
-```{r}
-divisions <- districts_pop %>%
-  group_by(r_div) %>%
+Data-exploration: wat is R_DIV variable?
+
+```{r, message=FALSE, warning=FALSE}
+divisions <- districts %>%
+  group_by(R_DIV) %>%
   tally()
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 divisions
 ```
 
 
-
-
-
-```{r}
+```{r, message=FALSE, warning=FALSE}
 mapview(divisions)
 ```
 
-# Spatial / data-manipulation: select Manchester-region
+# Spatial / data-manipulation: select districts in Manchester-region
 
-```{r}
-nwestern <- districts_pop %>%
-  filter(r_div == 'NORTH WESTERN')
+```{r, message=FALSE, warning=FALSE}
+nwestern <- districts %>%
+  filter(R_DIV == 'NORTH WESTERN')
 ```
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
+# static plot of Manchester districts
+qtm(nwestern, fill = 'pct_secondary')
+```
+
+```{r, message=FALSE, warning=FALSE}
+# interactive plot of Manchester districts
 mapview(nwestern, zcol = 'pct_secondary') + raillines
 ```
 
-```{r}
-qtm(nwestern, fill = 'pct_secondary')
-```
 
-```{r}
-qtm(nwestern, fill = 'pct_secondary')
-```

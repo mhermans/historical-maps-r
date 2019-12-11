@@ -1,70 +1,70 @@
 ---
-title: "Plotting maps"
+title: "Plotting thematic maps with tmap"
 output: 
     html_document:
         toc: TRUE
         toc_float: TRUE
 ---
 
-Recommended packages:
+Recommended R packages for plotting :
 
-* [tmap](https://github.com/mtennekes/tmap#tmap-thematic-maps-in-r): special-purpose package for *t*hematic *map*s in R. [**focus**]
-* [mapview](https://r-spatial.github.io/mapview/): quick, single-function to interactively view spatial data(frames).
-* [ggplot](https://ggplot2.tidyverse.org/): most popular package for datavis in R, recent and growing support for maps.
-* [leaflet](https://rstudio.github.io/leaflet/): flexible, general purpose package for interactive maps.
+* [tmap](https://github.com/mtennekes/tmap#tmap-thematic-maps-in-r): special-purpose package for *t*hematic *map*s in R. [static, **focus here**]
+* [mapview](https://r-spatial.github.io/mapview/): quick, single-function to interactively view spatial data(frames). [interactive, demonstrated]
+* [ggplot](https://ggplot2.tidyverse.org/): most popular package for datavis in R, recent and growing support for maps.  [static, not discussed here]
+* [leaflet](https://rstudio.github.io/leaflet/): flexible, general purpose package for interactive maps. [interactive, not discussed here]
 
 Learn more:
 
-* [Stackoverflow](https://stackoverflow.com).
-* Documentation tmap (F1).
+* Documentation tmap: press F1 and [online](https://github.com/mtennekes/tmap).
 * Books: "[An Introduction to R for Spatial Analysis and Mapping](https://books.google.be/books?id=iwJ6DwAAQBAJ) (2018)", "[Geocomputation with R](https://geocompr.robinlovelace.net/]) (full-text)", "[Data Visualization. A practical introduction](https://socviz.co/)", "[Fundamentals of Data Visualization](https://serialmentor.com/dataviz/geospatial-data.html) (full-text).
+* [Questions on Stackoverflow](https://stackoverflow.com).
 * [Datacamp courses](https://www.datacamp.com/).
 
 
-```{r, message=FALSE, warning=FALSE}
-library(BelgiumMaps.StatBel)
-library(mapview)
-library(sf)
-library(tmap)
-library(readr)
-library(dplyr)
-library(ggplot2)
-```
+`tmap` In an nutshell:
 
-
-# Thematic maps with tmap
-
-In an nutshell:
-
-* **Q**uick **t**hematic **m**ap: `qtm()`
-* Build map in layers with lots of control and options: `tm_shape()`, `tm_fill()`, `tm_borders()`, `tm_lines()`, etc.
+* Quick 'n dirty thematic maps: **Q**uick **t**hematic **m**ap: `qtm()`
+* Build map in layers with lots and lots of control and options: `tm_shape()`, `tm_fill()`, `tm_borders()`, `tm_lines()`, `tm_layout()` etc.
 * Cherry-on-top: switch between interactive and static plotting with `tmap_mode('view')` and `tmap_mode('plot')`.
 
-Some resources:
+Some resources on tmap:
 
 * [Getting started with tmap](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html)
 * https://geocompr.robinlovelace.net/adv-map.html
 * Background and walkthrough: [Tennekes, M., 2018, tmap: Thematic Maps in R, Journal of Statistical Software, 84(6), 1-39](https://www.jstatsoft.org/article/view/v084i06).
 
-Already showed some examples, here extra focus on:
 
-* "Layered" building of maps.
-* Binning and color scales
-* Multiple (styled) borders
-* Multiple maps
+```{r, message=FALSE, warning=FALSE}
+library(here)
+library(mapview)
+library(sf)
+library(tmap)
+library(dplyr)
+library(readxl)
+library(scales) # for function percent_format()
+```
 
-Tip: for _final_ tweaks, save map as SVG and edit in [Inkscape](https://inkscape.org/).
 
+```{r, message=FALSE, warning=FALSE, results = 'hide'}
+# (1) load spatial data
+raillines <- st_read(here('data/source/census_1851_raillines/1851EngWalesScotRail_Lines.shp'))
 
+districts_spatial <- st_read(here('data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp')) %>%
+  mutate(CEN1 = as.numeric(as.character(CEN1))) # make sure identifiers are the same type
+
+# (2) load and add data-of-interest
+districts_data <- read_excel(here('data/census1851_districts_count.xlsx'))
+districts <- left_join(districts_spatial, districts_data, by = c('CEN1' = 'district_id'))
+```
 
 
 ```{r, message=FALSE, warning=FALSE}
-tm_shape(districts_pop) +
+tm_shape(districts) +
   tm_borders()
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-tm_shape(districts_pop) +
+tm_shape(districts) +
   tm_fill('pct_secondary')
 ```
 
@@ -74,7 +74,7 @@ tm_shape(districts_pop) +
 
 
 ```{r, message=FALSE, warning=FALSE}
-tm_shape(districts_pop) +
+tm_shape(districts) +
   tm_borders(col = 'white') +
   tm_fill('pct_secondary', title = 'Emploment secondary sector')
 ```
@@ -82,7 +82,7 @@ tm_shape(districts_pop) +
 
 
 ```{r, message=FALSE, warning=FALSE}
-tm_shape(districts_pop) +
+tm_shape(districts) +
   tm_borders(col = 'white') +
   tm_fill('pct_secondary', title = 'Emploment secondary sector') +
   tm_shape(raillines) +
@@ -91,25 +91,48 @@ tm_shape(districts_pop) +
 
 
 ```{r, warning=FALSE, error=FALSE}
+nwestern <- districts %>%
+  filter(R_DIV == 'NORTH WESTERN')
+  
+
 tm_shape(nwestern) +
   tm_fill(col = 'pct_secondary') +
   tm_text('district_name', size = .5)
 ```
 
 
+# Putting it all together
+
 ```{r, message=FALSE, warning=FALSE}
-library(scales)
-map_final <- tm_shape(districts_pop) +
+map_final <- tm_shape(districts) +
   tm_borders(col = 'white') +
   tm_fill('pct_secondary', title = 'Secondary sector\nemployment', legend.format = percent_format(accuracy = 1), legend.hist = TRUE) +
   tm_shape(raillines) +
   tm_lines(col = 'grey60') +
   tm_layout(main.title = 'Railways & secondary sector employment in 1851', legend.outside = TRUE, frame = FALSE) +
   tm_credits('Source: Cambridge Group for the\nHistory of Population and Social Structure', position = 'right', align = 'right')
+
 map_final
 ```
 
 ```{r, error=FALSE, warning=FALSE}
+# save final map
 tmap_save(map_final, here('output/england_1851_map_final.png'), width = 1920, height = 1920)
+```
+
+# Cherry-on-top: tmap interactive mode
+
+```{r, warning=FALSE, message=FALSE}
+tmap_mode("view")
+tm_shape(nwestern) +
+  tm_fill(col = 'pct_secondary') +
+  tm_text('district_name')
+tmap_mode("plot")
+```
+
+```{r, error=FALSE, warning=FALSE}
+tmap_mode("view")
+map_final
+tmap_mode("plot")
 ```
 

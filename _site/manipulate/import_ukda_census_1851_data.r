@@ -143,167 +143,184 @@ census1851_occp_clean %>%
   verify(dim(.) == c(156300, 11)) %>%
   write.xlsx(here::here('data/source/census1851_occupations_count.xlsx'))
 
+
+pop_district <- census1851_occp_clean %>%
+  group_by(district_id, district_name, pst_a_label) %>%
+  tally(occupation_count) %>%
+  spread(pst_a_label, n)
+
+pop_district <- pop_district %>%
+  mutate(total = primary + secondary + tertiary_dealers + tertiary_sellers + tertiary_services_professions + sector_unspecific + no_occupation) %>%
+  mutate(pct_secondary = secondary / total)
+
+
+pop_district %>%
+  verify(dim(.) == c(576, 11)) %>%
+  write.xlsx(here::here('data/census1851_districts_count.xlsx'))
   
 
-# census1851_occp <- census1851_occp %>%
-#   mutate(rd_id = as.character(rd_id)) %>%
-#   left_join(census1851_pop %>% select(rd_id, m1851, f1851),
-#             by = 'rd_id') %>%
-#   rename(pop_county_male = m1851, pop_county_female = f1851) %>%
-#   mutate(pop_county_total = pop_county_male + pop_county_female)
-
-census1851_occp %>%
-  filter(occ == 'baker') %>%
-  group_by(regcounty) %>%
-  summarise(pop_county_total)
 
 
-census1851_occp 
-
-census1851_occp %>%
-  group_by(regcounty) %>%
-  tally(n)
-
-
-
-
-
-%>%
-  filter(pst1a == 2) %>%
-  tally(n)
-
-
-
-
-
-
-
-census1851_occp %>%
-  filter(sex == 'sex')
-
-census1851_occp %>%
-  group_by(sex) %>%
-  tally(n)
-
-census1851_occp %>%
-  group_by(pst1a) %>%
-  tally(n)
-
-census1851_occp %>%
-  group_by(pst1a) %>%
-  tally(n)
-
-census1851_occp %>%
-  group_by(sex, pst1a) %>%
-  tally(n) %>%
-  spread(sex, n)
-
-census1851_occp %>%
-  group_by(sex, pst1a) %>%
-  tally(n) %>%
-  spread(sex, n) %>%
-  mutate(pct_women = F / ( F + M) )
-
-census1851_occp %>%
-  #filter(str_detect(occ, 'baker')) %>%
-  filter(occ == 'baker') %>%
-  group_by(regcounty) %>%
-  tally(n) %>%
-  arrange(desc(n))
-
-
-
-census1851_occp %>%
-  filter(!(occ %in% census1851_occup_mapping$original_occupation))
-  # filter(occ %in% census1851_occup_mapping$original_occupation) %>%
-  tally(n)
-
-table(census1851_occp$occ %in% census1851_occup_mapping$original_occupation)
-
-census1851_districts <- census1851_districts %>%
-  left_join(census1851_pop, by = c('cen1' = 'rd_id'))
-
-census1851_districts <- census1851_districts %>%
-  mutate(t1851 = m1851 + f1851)
-
-census1851_districts %>%
-  filter(r_dist == 'LUTON')
-
-mapview(census1851_districts)
-
-
-
-qtm(census1851_districts, fill = 't1851')
-
-census1851_counties <- census1851_districts %>%
-  group_by(r_cty) %>%
-  summarise()
-
-mapview(census1851_districts)
-mapview(census1851_counties)
-
-qtm(census1851_districts %>%
-  group_by(r_cty) %>%
-  summarise())
-
-tm_shape(census1851_counties) +
-  tm_borders(col = 'grey') +
-  tm_shape(raillines_1851) +
-  tm_lines(col = 'blue')
-
-tm_shape(census1851_counties) +
-  tm_borders(col = 'black') +
-  tm_shape(census1851_districts) +
-  tm_borders(col = 'grey') +
-  tm_shape(raillines_1851) +
-  tm_lines(col = 'blue')
-
-
-
-census1851_districts %>%
-  filter(cen1 == 181)
-
-mapview(raillines_1851)
-
-qtm(raillines_1851)
-
-# percentage of secondary sector employment
-
-district_pct_secondary <- census1851_occp %>%
-  group_by(rd_id, rdname, pst1a) %>%
-  tally(n) %>%
-  spread(pst1a, n) %>%
-  mutate(total = `1` + `2` + `3` + `4` + `5` + `90` + `99`) %>%
-  mutate(pct_secondary = `2` / total)
-
-d <- census1851_districts %>%
-  mutate(cen1 = as.numeric(as.character(cen1))) %>%
-  left_join(district_pct_secondary, by = c('cen1' = 'rd_id'))
-
-d %>%
-  group_by(r_ctry) %>%
-  tally()
-
-d %>% filter(r_ctry != 'WALES')
-
-qtm(d, fill = 'pct_secondary')
-
-tm_shape(d %>% filter(r_ctry != 'WALES')) +
-  tm_borders(col = 'white') +
-  tm_fill(col = 'pct_secondary') +
-  tm_shape(raillines_1851[d,]) +
-  tm_lines(col = 'black')
-
-
-
-
-raillines_1851 %>%
-  filter(st_intersects(x = ., y = d, sparse = FALSE))
-
-
-
-st_overlaps(raillines_1851, d)
-
-+
-  tm_shape(census1851_counties) +
-  tm_borders(col = 'grey')
+# 
+# # census1851_occp <- census1851_occp %>%
+# #   mutate(rd_id = as.character(rd_id)) %>%
+# #   left_join(census1851_pop %>% select(rd_id, m1851, f1851),
+# #             by = 'rd_id') %>%
+# #   rename(pop_county_male = m1851, pop_county_female = f1851) %>%
+# #   mutate(pop_county_total = pop_county_male + pop_county_female)
+# 
+# census1851_occp %>%
+#   filter(occ == 'baker') %>%
+#   group_by(regcounty) %>%
+#   summarise(pop_county_total)
+# 
+# 
+# census1851_occp 
+# 
+# census1851_occp %>%
+#   group_by(regcounty) %>%
+#   tally(n)
+# 
+# 
+# 
+# 
+# 
+# %>%
+#   filter(pst1a == 2) %>%
+#   tally(n)
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# census1851_occp %>%
+#   filter(sex == 'sex')
+# 
+# census1851_occp %>%
+#   group_by(sex) %>%
+#   tally(n)
+# 
+# census1851_occp %>%
+#   group_by(pst1a) %>%
+#   tally(n)
+# 
+# census1851_occp %>%
+#   group_by(pst1a) %>%
+#   tally(n)
+# 
+# census1851_occp %>%
+#   group_by(sex, pst1a) %>%
+#   tally(n) %>%
+#   spread(sex, n)
+# 
+# census1851_occp %>%
+#   group_by(sex, pst1a) %>%
+#   tally(n) %>%
+#   spread(sex, n) %>%
+#   mutate(pct_women = F / ( F + M) )
+# 
+# census1851_occp %>%
+#   #filter(str_detect(occ, 'baker')) %>%
+#   filter(occ == 'baker') %>%
+#   group_by(regcounty) %>%
+#   tally(n) %>%
+#   arrange(desc(n))
+# 
+# 
+# 
+# census1851_occp %>%
+#   filter(!(occ %in% census1851_occup_mapping$original_occupation))
+#   # filter(occ %in% census1851_occup_mapping$original_occupation) %>%
+#   tally(n)
+# 
+# table(census1851_occp$occ %in% census1851_occup_mapping$original_occupation)
+# 
+# census1851_districts <- census1851_districts %>%
+#   left_join(census1851_pop, by = c('cen1' = 'rd_id'))
+# 
+# census1851_districts <- census1851_districts %>%
+#   mutate(t1851 = m1851 + f1851)
+# 
+# census1851_districts %>%
+#   filter(r_dist == 'LUTON')
+# 
+# mapview(census1851_districts)
+# 
+# 
+# 
+# qtm(census1851_districts, fill = 't1851')
+# 
+# census1851_counties <- census1851_districts %>%
+#   group_by(r_cty) %>%
+#   summarise()
+# 
+# mapview(census1851_districts)
+# mapview(census1851_counties)
+# 
+# qtm(census1851_districts %>%
+#   group_by(r_cty) %>%
+#   summarise())
+# 
+# tm_shape(census1851_counties) +
+#   tm_borders(col = 'grey') +
+#   tm_shape(raillines_1851) +
+#   tm_lines(col = 'blue')
+# 
+# tm_shape(census1851_counties) +
+#   tm_borders(col = 'black') +
+#   tm_shape(census1851_districts) +
+#   tm_borders(col = 'grey') +
+#   tm_shape(raillines_1851) +
+#   tm_lines(col = 'blue')
+# 
+# 
+# 
+# census1851_districts %>%
+#   filter(cen1 == 181)
+# 
+# mapview(raillines_1851)
+# 
+# qtm(raillines_1851)
+# 
+# # percentage of secondary sector employment
+# 
+# district_pct_secondary <- census1851_occp %>%
+#   group_by(rd_id, rdname, pst1a) %>%
+#   tally(n) %>%
+#   spread(pst1a, n) %>%
+#   mutate(total = `1` + `2` + `3` + `4` + `5` + `90` + `99`) %>%
+#   mutate(pct_secondary = `2` / total)
+# 
+# d <- census1851_districts %>%
+#   mutate(cen1 = as.numeric(as.character(cen1))) %>%
+#   left_join(district_pct_secondary, by = c('cen1' = 'rd_id'))
+# 
+# d %>%
+#   group_by(r_ctry) %>%
+#   tally()
+# 
+# d %>% filter(r_ctry != 'WALES')
+# 
+# qtm(d, fill = 'pct_secondary')
+# 
+# tm_shape(d %>% filter(r_ctry != 'WALES')) +
+#   tm_borders(col = 'white') +
+#   tm_fill(col = 'pct_secondary') +
+#   tm_shape(raillines_1851[d,]) +
+#   tm_lines(col = 'black')
+# 
+# 
+# 
+# 
+# raillines_1851 %>%
+#   filter(st_intersects(x = ., y = d, sparse = FALSE))
+# 
+# 
+# 
+# st_overlaps(raillines_1851, d)
+# 
+# +
+#   tm_shape(census1851_counties) +
+#   tm_borders(col = 'grey')

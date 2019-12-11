@@ -373,23 +373,11 @@ div.tocify {
 </div>
 
 
-<p>We have a (spatial) dataframe with the blank map-information, now we want to add our data-of-interest. Two steps:</p>
+<p>We have a spatial dataframe (step 1), now we want to add our data-of-interest to visualise on the thematic map. Two steps:</p>
 <ol style="list-style-type: decimal">
 <li>Read in data-of-interst into R.</li>
 <li>Join data-of-interest with the spatial dataframe.</li>
 </ol>
-<pre class="r"><code># library(BelgiumMaps.StatBel)
-# library(tmap)
-# library(tmaptools)
-# library(sf)
-# library(dplyr)
-# library(readr)
-# library(readxl)
-# library(haven)
-library(tidyr)
-library(readxl)</code></pre>
-<div id="read-in-data-of-interest" class="section level1">
-<h1>Read in data-of-interest</h1>
 <p>Crucial for linking: have a variable/column in your that contains the appropriate spatial identifier. E.g. Census-identifer, NIS-code, NUTS-code, etc.</p>
 <p>How to read in your data depends on the format, three recommended R-packages should cover mosts posibilities:</p>
 <ul>
@@ -397,10 +385,18 @@ library(readxl)</code></pre>
 <li><a href="https://readxl.tidyverse.org/">readxl</a>: read in Excel-files (.xlsx, .xls).</li>
 <li><a href="https://haven.tidyverse.org/">haven</a>: read/write datasets from SAS, SPSS, Stata.</li>
 </ul>
+<pre class="r"><code>library(here)
+library(tidyr)
+library(readxl)
+library(dplyr)
+library(sf)
+library(tmap)</code></pre>
+<div id="read-in-data-of-interest-census-1851" class="section level1">
+<h1>Read in data-of-interest: census 1851</h1>
 <pre class="r"><code># census 1851 datafile: 156.300 records x 11 variables
-census &lt;- read_xlsx(here(&#39;data/source/census1851_occupations_count.xlsx&#39;))</code></pre>
+census_data &lt;- read_xlsx(here(&#39;data/source/census1851_occupations_count.xlsx&#39;))</code></pre>
 <pre class="r"><code># show records 1 to 10
-census %&gt;%
+census_data %&gt;%
   slice(1:10)</code></pre>
 <pre><code>## # A tibble: 10 x 11
 ##    county_name district_name district_id sex   occupation_label
@@ -421,9 +417,10 @@ census %&gt;%
 </div>
 <div id="explore-data-of-interest" class="section level1">
 <h1>Explore data-of-interest</h1>
+<p>Exploring and manipulating data uses tidyverse “verbs”: filter, select, group_by, join, tally, mutate, etc.</p>
 <div id="occupations-gender" class="section level2">
 <h2>Occupations &amp; gender</h2>
-<pre class="r"><code>census %&gt;%
+<pre class="r"><code>census_data %&gt;%
   group_by(sex) %&gt;%
   tally(occupation_count)</code></pre>
 <pre><code>## # A tibble: 2 x 2
@@ -431,7 +428,7 @@ census %&gt;%
 ##   &lt;chr&gt;   &lt;dbl&gt;
 ## 1 F     4775509
 ## 2 M     4399377</code></pre>
-<pre class="r"><code>census %&gt;%
+<pre class="r"><code>census_data %&gt;%
   group_by(sex, pst_a_label) %&gt;%
   tally(occupation_count) %&gt;%
   spread(sex, n)</code></pre>
@@ -445,7 +442,7 @@ census %&gt;%
 ## 5 tertiary_dealers                18140   87801
 ## 6 tertiary_sellers                47306  119377
 ## 7 tertiary_services_professions  957968  792939</code></pre>
-<pre class="r"><code>census %&gt;%
+<pre class="r"><code>census_data %&gt;%
   group_by(sex, pst_a_label) %&gt;%
   tally(occupation_count) %&gt;%
   spread(sex, n) %&gt;%
@@ -463,11 +460,11 @@ census %&gt;%
 </div>
 <div id="which-county-has-the-most-bakers-in-1851" class="section level2">
 <h2>Which county has the most bakers in 1851?</h2>
-<pre class="r"><code>census %&gt;%
-  filter(occupation_label == &#39;baker&#39;) %&gt;%
+<pre class="r"><code>census_data %&gt;%
+  filter(occupation_label == &#39;baker&#39;) %&gt;% # select only records with occup &#39;baker&#39;
   group_by(county_name) %&gt;%
-  tally(occupation_count) %&gt;%
-  arrange(desc(n))</code></pre>
+  tally(occupation_count) %&gt;% # count bakers, grouped by county
+  arrange(desc(n)) # sort descending on number of bakers</code></pre>
 <pre><code>## # A tibble: 42 x 2
 ##    county_name               n
 ##    &lt;chr&gt;                 &lt;dbl&gt;
@@ -485,16 +482,16 @@ census %&gt;%
 </div>
 <div id="percentage-secondary-sector-workers-per-district" class="section level2">
 <h2>Percentage secondary-sector workers per district</h2>
-<pre class="r"><code>pop_district &lt;- census %&gt;%
+<pre class="r"><code>districts_data &lt;- census_data %&gt;%
   group_by(district_id, district_name, pst_a_label) %&gt;%
   tally(occupation_count) %&gt;%
   spread(pst_a_label, n)
 
-pop_district &lt;- pop_district %&gt;%
+districts_data &lt;- districts_data %&gt;%
   mutate(total = primary + secondary + tertiary_dealers + tertiary_sellers + tertiary_services_professions + sector_unspecific + no_occupation) %&gt;%
   mutate(pct_secondary = secondary / total)
 
-pop_district</code></pre>
+districts_data</code></pre>
 <pre><code>## # A tibble: 576 x 11
 ##    district_id district_name no_occupation primary secondary
 ##          &lt;dbl&gt; &lt;chr&gt;                 &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;
@@ -513,40 +510,22 @@ pop_district</code></pre>
 ## #   tertiary_services_professions &lt;dbl&gt;, total &lt;dbl&gt;, pct_secondary &lt;dbl&gt;</code></pre>
 </div>
 </div>
-<div id="join-spatial-data-and-data-of-interest" class="section level1">
-<h1>Join spatial data and data-of interest</h1>
-<p>Recommended options:</p>
-<ol style="list-style-type: decimal">
-<li>general dataframe-<a href="https://stat545.com/bit001_dplyr-cheatsheet.html">join functions from dplyr</a>: <code>left_join()</code>.</li>
-<li>map-specific <a href="https://rdrr.io/cran/tmaptools/man/append_data.html">helper function from tmaptools</a>: <code>append_data()</code>.</li>
-</ol>
-<pre class="r"><code># option 1 (dplyr): 
+<div id="join-spatial-data-districts-and-data-of-interest-occupation-data" class="section level1">
+<h1>Join spatial data (districts) and data-of interest (occupation-data)</h1>
+<p>Join spatial and non-spatial dataframes using general dataframe-join functions (online <a href="https://stat545.com/bit001_dplyr-cheatsheet.html">cheatsheet for types of joins</a>).</p>
+<pre class="r"><code># Example syntax:
 library(dplyr)
-data &lt;- left_join(map_data, data_of_interest, by = &quot;identifier&quot;)
-data &lt;- left_join(map_data, data_of_interest, by = c(&quot;map_identifier&quot; = &quot;data_identifier&quot;))</code></pre>
-<pre class="r"><code># option 2 (maptools):
-library(tmaptools)
-data &lt;- append_data(map_data, data_of_interest, 
-                    key.shp = &quot;map_identifier&quot;, key.data = &quot;data_identifier&quot;)</code></pre>
-</div>
-<div id="join-spatial-districts-and-census-data" class="section level1">
-<h1>Join spatial districts and census data</h1>
-<pre class="r"><code>districts &lt;- st_read(
-  file.path(here(&#39;data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp&#39;))) %&gt;%
-  clean_names()</code></pre>
-<pre><code>## Reading layer `1851EngWalesRegistrationDistrict&#39; from data source `/home/rstudio/projects/historical-maps-r/data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp&#39; using driver `ESRI Shapefile&#39;
-## Simple feature collection with 1194 features and 6 fields
-## geometry type:  POLYGON
-## dimension:      XY
-## bbox:           xmin: 87019.07 ymin: 7067.26 xmax: 655747.5 ymax: 657473.5
-## epsg (SRID):    NA
-## proj4string:    +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +datum=OSGB36 +units=m +no_defs</code></pre>
-<pre class="r"><code>districts_pop &lt;- districts %&gt;%
-  mutate(cen1 = as.numeric(as.character(cen1))) %&gt;% # make sure identifiers are the same type
-  left_join(pop_district, by = c(&#39;cen1&#39; = &#39;district_id&#39;))</code></pre>
-<pre class="r"><code>districts_pop</code></pre>
+data &lt;- left_join(spatial_data, data_of_interest, by = &quot;identifier&quot;)
+data &lt;- left_join(spatial_data, data_of_interest, by = c(&quot;spatial_identifier&quot; = &quot;data_identifier&quot;))</code></pre>
+<p>Example: join spatial data on districts, and calculated data and percentages on occupations.</p>
+<pre class="r"><code># load spatial data on districts
+districts_spatial &lt;- st_read(here(&#39;data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp&#39;)) %&gt;%
+  mutate(CEN1 = as.numeric(as.character(CEN1))) # make sure identifiers are the same type as in the district data</code></pre>
+<pre class="r"><code># add population data on district-level to the spatial data-set
+districts &lt;- left_join(districts_spatial, districts_data, by = c(&#39;CEN1&#39; = &#39;district_id&#39;))</code></pre>
+<pre class="r"><code>districts</code></pre>
 <pre><code>## # A tibble: 1,198 x 17
-##     cen1 r_dist r_cty r_divno r_div r_ctry district_name no_occupation
+##     CEN1 R_DIST R_CTY R_DIVNO R_DIV R_CTRY district_name no_occupation
 ##    &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt;  &lt;chr&gt;                 &lt;dbl&gt;
 ##  1     3 ST GE… LOND… I       LOND… ENGLA… St George Ha…         12506
 ##  2     6 ST. J… LOND… I       LOND… ENGLA… St James Wes…          5795
@@ -562,8 +541,11 @@ data &lt;- append_data(map_data, data_of_interest,
 ## #   secondary &lt;dbl&gt;, sector_unspecific &lt;dbl&gt;, tertiary_dealers &lt;dbl&gt;,
 ## #   tertiary_sellers &lt;dbl&gt;, tertiary_services_professions &lt;dbl&gt;,
 ## #   total &lt;dbl&gt;, pct_secondary &lt;dbl&gt;, geometry &lt;POLYGON [m]&gt;</code></pre>
-<pre class="r"><code>qtm(districts_pop, fill = &#39;total&#39;)</code></pre>
-<p><img src="02_add_data_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="test-display-joined-data-on-a-map" class="section level1">
+<h1>Test: display joined data on a map</h1>
+<pre class="r"><code>qtm(districts, fill = &#39;total&#39;)</code></pre>
+<p><img src="02_add_data_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 
 

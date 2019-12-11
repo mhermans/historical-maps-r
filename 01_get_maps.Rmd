@@ -10,11 +10,11 @@ output:
 We need to have "blank maps" to color in as thematic maps, and optionally spatial data (points, lines) to add. Two sources:
 
 1. Dowloaded file [focus here].
-2. Provided through an R-package [see other workshop].
+2. Provided through an R-package [see [other workshop](https://workshop.mhermans.net/thematic-maps-r/01_get_maps.html).
 
-Various formats possible: Shapefile, GeoJSON, KML, GPX-tracks, etc.
+Various formats for spatial data possible: Shapefile, GeoJSON, KML, GPX-tracks, etc.
 
-Recommended: Use `st_read` from the `sf` library, as it returns a spatial feature object and is based on [GDAL](https://gdal.org/) : hard to find a format not covered.
+Recommended: Use `st_read()` function from the `sf` library, as it returns a spatial feature object and is based on [GDAL](https://gdal.org/): hard to find a format not covered.
 
 Points of attention:
 
@@ -31,9 +31,10 @@ library(tmap)
 library(here)
 ```
 
-```{r, message=FALSE, warning=FALSE}
-raillines <- st_read(here('data/source/census_1851_raillines/1851EngWalesScotRail_Lines.shp')) %>%
-  clean_names()
+# Example: load railway tracks
+
+```{r, message=FALSE, warning=FALSE, results = 'hide'}
+raillines <- st_read(here('data/source/census_1851_raillines/1851EngWalesScotRail_Lines.shp'))
 ```
 
 ```{r}
@@ -44,18 +45,18 @@ mapview(raillines)
 qtm(raillines)
 ```
 
+# Example: load cencus districts
 
-```{r, message=FALSE, warning=FALSE}
-districts <- st_read(here('data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp')) %>%
-  clean_names()
+```{r, message=FALSE, warning=FALSE, results = 'hide'}
+districts_spatial <- st_read(here('data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp'))
 ```
 
 
 ```{r, message=FALSE, warning=FALSE}
-mapview(districts)
+mapview(districts_spatial)
 ```
 
 ```{r, message=FALSE, warning=FALSE}
-qtm(districts)
+qtm(districts_spatial)
 ```
 

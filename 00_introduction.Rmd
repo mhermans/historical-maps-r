@@ -7,30 +7,27 @@ output:
       toc_float: yes
 ---
 
-# Motivating examples
+# Some motivating examples
 
-* Examples using R package `tmap`: 
-
-example Belgium https://workshop.mhermans.net/thematic-maps-r/04_plot.html#add_layers_using_objects
-
-example Dynam https://hiva.kuleuven.be/nl/nieuws/nieuwsitems/bruto-jobtoename-en-afname-in-beeld-voor-de-Belgische-regios-en-provincies
-
-example gangen https://mhermans.net/post/mapping-leuvense-gangen/
-
+* Example we'll be working towards today: map of railways & secondary sector employment in England 1851.
+* Example from [previous workshop](https://workshop.mhermans.net/thematic-maps-r/04_plot.html#add_layers_using_objects) on thematic maps.
+* Basic examples of maps  using R package `tmap` [are online](https://github.com/mtennekes/tmap).
+* Example [online press release](https://hiva.kuleuven.be/nl/nieuws/nieuwsitems/bruto-jobtoename-en-afname-in-beeld-voor-de-Belgische-regios-en-provincies) HIVA - KU Leuven with interactive map.
+* Example of interactive [map with historical map layers](https://mhermans.net/post/mapping-leuvense-gangen/).
 
 
 # Why (not) R for making maps?
 
 | Why R | Why **not** R |
 | ----- | --------------|
-| | No GUI  
+|       | No GUI        |
 | statistical programming language | statistical programming language |
 |
 
 
 
 
-# Spatial data as regular data
+# Working with spatial data as regular data
 
 The "tidyverse"
 
