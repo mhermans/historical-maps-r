@@ -13,54 +13,39 @@ output:
 * Example from [previous workshop](https://workshop.mhermans.net/thematic-maps-r/04_plot.html#add_layers_using_objects) on thematic maps.
 * Basic examples of maps  using R package `tmap` [are online](https://github.com/mtennekes/tmap).
 * Example [online press release](https://hiva.kuleuven.be/nl/nieuws/nieuwsitems/bruto-jobtoename-en-afname-in-beeld-voor-de-Belgische-regios-en-provincies) HIVA - KU Leuven with interactive map.
-* Example of interactive [map with historical map layers](https://mhermans.net/post/mapping-leuvense-gangen/).
 
 
 # Why (not) R for making maps?
 
 | Why R | Why **not** R |
 | ----- | --------------|
-|       | No GUI        |
+|       | Learning curve / no GUI |
+| free & open source | |
+| large community & ecosystem  | |
+| very broad range of libraries | very broad range of libraries (docs) |
 | statistical programming language | statistical programming language |
-|
 
+Alternative for example: dedicated GUI-driven GIS-software such as [QGis](https://www.qgis.org/).
 
+With R ecosystem & programming background:
 
-
-# Working with spatial data as regular data
-
-The "tidyverse"
+* Stronger focus on 'data science': collecting, reading, manipulating, visualising, communicating about data beyond the 'traditional' reporting of statistical analyses. More info: [tidyverse](https://www.tidyverse.org/), ["[R for Data Science](https://r4ds.had.co.nz/)", e.g. gangen]. 
+* Spatial data is treated in analysis like regular dataframe (with a 'geometry' column): spatial analysis & "regular" analysis(skilss) move closer [more info: [simple features-standard in R](https://r-spatial.github.io/sf/index.html)
 
 Consequences:
 
-* Enables quick spatial exploration.
-* More creative links.
+* Enables quick spatial data-exploration in single program & work-flow.
+* Novel ways of approaching, using, presenting (esp. digital, large scale) datasources.
 
-More info:
-
-* 
-
-
-# Recommended R libraries
-
-* R environment: Rstudio
-
-
-# Self-learn suggestions
-
-
-https://geocompr.robinlovelace.net/adv-map.html
-
+Example: interactive [map with historical map layers](https://mhermans.net/post/mapping-leuvense-gangen/).
 
 # Worked example: rail & industry in 1851 England
 
 Data-source: *The occupational structure of Britain 1379-1911*, [Cambridge Group for the History of Population and Social Structure](https://www.campop.geog.cam.ac.uk/research/occupations/).
 
-Illustrating through exampes common steps for common thematic maps:
+We will illustrate throughout example common steps for thematic maps:
 
-1. Get an appropriate blank map.
-2. Load and add "regular" data.
+1. Load spatial data.
+2. Load and add "regular" data-of-intrest.
 3. Manipulate (spatial) data.
 4. Plot map.
-
-

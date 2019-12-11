@@ -75,7 +75,7 @@ tm_shape(districts) +
 
 ```{r, message=FALSE, warning=FALSE}
 tm_shape(districts) +
-  tm_borders(col = 'white') +
+  tm_borders(col = 'white', lwd = 0.5) +
   tm_fill('pct_secondary', title = 'Emploment secondary sector')
 ```
 
@@ -83,7 +83,7 @@ tm_shape(districts) +
 
 ```{r, message=FALSE, warning=FALSE}
 tm_shape(districts) +
-  tm_borders(col = 'white') +
+  tm_borders(col = 'white', lwd = 0.5) +
   tm_fill('pct_secondary', title = 'Emploment secondary sector') +
   tm_shape(raillines) +
   tm_lines(col = 'grey60')
@@ -105,7 +105,7 @@ tm_shape(nwestern) +
 
 ```{r, message=FALSE, warning=FALSE}
 map_final <- tm_shape(districts) +
-  tm_borders(col = 'white') +
+  tm_borders(col = 'white', lwd = 0.5) +
   tm_fill('pct_secondary', title = 'Secondary sector\nemployment', legend.format = percent_format(accuracy = 1), legend.hist = TRUE) +
   tm_shape(raillines) +
   tm_lines(col = 'grey60') +
@@ -129,10 +129,3 @@ tm_shape(nwestern) +
   tm_text('district_name')
 tmap_mode("plot")
 ```
-
-```{r, error=FALSE, warning=FALSE}
-tmap_mode("view")
-map_final
-tmap_mode("plot")
-```
-

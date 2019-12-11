@@ -373,15 +373,14 @@ div.tocify {
 </div>
 
 
-<div id="motivating-examples" class="section level1">
-<h1>Motivating examples</h1>
+<div id="some-motivating-examples" class="section level1">
+<h1>Some motivating examples</h1>
 <ul>
-<li><p>Example today</p></li>
-<li><p>Examples using R package <code>tmap</code>:</p></li>
+<li>Example we’ll be working towards today: map of railways &amp; secondary sector employment in England 1851.</li>
+<li>Example from <a href="https://workshop.mhermans.net/thematic-maps-r/04_plot.html#add_layers_using_objects">previous workshop</a> on thematic maps.</li>
+<li>Basic examples of maps using R package <code>tmap</code> <a href="https://github.com/mtennekes/tmap">are online</a>.</li>
+<li>Example <a href="https://hiva.kuleuven.be/nl/nieuws/nieuwsitems/bruto-jobtoename-en-afname-in-beeld-voor-de-Belgische-regios-en-provincies">online press release</a> HIVA - KU Leuven with interactive map.</li>
 </ul>
-<p>example Belgium <a href="https://workshop.mhermans.net/thematic-maps-r/04_plot.html#add_layers_using_objects" class="uri">https://workshop.mhermans.net/thematic-maps-r/04_plot.html#add_layers_using_objects</a></p>
-<p>example Dynam <a href="https://hiva.kuleuven.be/nl/nieuws/nieuwsitems/bruto-jobtoename-en-afname-in-beeld-voor-de-Belgische-regios-en-provincies" class="uri">https://hiva.kuleuven.be/nl/nieuws/nieuwsitems/bruto-jobtoename-en-afname-in-beeld-voor-de-Belgische-regios-en-provincies</a></p>
-<p>example gangen <a href="https://mhermans.net/post/mapping-leuvense-gangen/" class="uri">https://mhermans.net/post/mapping-leuvense-gangen/</a></p>
 </div>
 <div id="why-not-r-for-making-maps" class="section level1">
 <h1>Why (not) R for making maps?</h1>
@@ -395,49 +394,46 @@ div.tocify {
 <tbody>
 <tr class="odd">
 <td></td>
-<td>No GUI</td>
+<td>Learning curve / no GUI</td>
 </tr>
 <tr class="even">
-<td>statistical programming language</td>
-<td>statistical programming language</td>
+<td>free &amp; open source</td>
+<td></td>
 </tr>
 <tr class="odd">
+<td>large community &amp; ecosystem</td>
 <td></td>
-<td></td>
+</tr>
+<tr class="even">
+<td>very broad range of libraries</td>
+<td>very broad range of libraries (docs)</td>
+</tr>
+<tr class="odd">
+<td>statistical programming language</td>
+<td>statistical programming language</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="spatial-data-as-regular-data" class="section level1">
-<h1>Spatial data as regular data</h1>
-<p>The “tidyverse”</p>
+<p>Alternative for example: dedicated GUI-driven GIS-software such as <a href="https://www.qgis.org/">QGis</a>.</p>
+<p>With R ecosystem &amp; programming background:</p>
+<ul>
+<li>Stronger focus on ‘data science’: collecting, reading, manipulating, visualising, communicating about data beyond the ‘traditional’ reporting of statistical analyses. More info: <a href="https://www.tidyverse.org/">tidyverse</a>, [“<a href="https://r4ds.had.co.nz/">R for Data Science</a>”, e.g. gangen].</li>
+<li>Spatial data is treated in analysis like regular dataframe (with a ‘geometry’ column): spatial analysis &amp; “regular” analysis(skilss) move closer [more info: <a href="https://r-spatial.github.io/sf/index.html">simple features-standard in R</a></li>
+</ul>
 <p>Consequences:</p>
 <ul>
-<li>Enables quick spatial exploration.</li>
-<li>More creative links.</li>
+<li>Enables quick spatial data-exploration in single program &amp; work-flow.</li>
+<li>Novel ways of approaching, using, presenting (esp. digital, large scale) datasources.</li>
 </ul>
-<p>More info:</p>
-<ul>
-<li></li>
-</ul>
-</div>
-<div id="recommended-r-libraries" class="section level1">
-<h1>Recommended R libraries</h1>
-<ul>
-<li>R environment: Rstudio</li>
-</ul>
-</div>
-<div id="self-learn-suggestions" class="section level1">
-<h1>Self-learn suggestions</h1>
-<p><a href="https://geocompr.robinlovelace.net/adv-map.html" class="uri">https://geocompr.robinlovelace.net/adv-map.html</a></p>
+<p>Example: interactive <a href="https://mhermans.net/post/mapping-leuvense-gangen/">map with historical map layers</a>.</p>
 </div>
 <div id="worked-example-rail-industry-in-1851-england" class="section level1">
 <h1>Worked example: rail &amp; industry in 1851 England</h1>
 <p>Data-source: <em>The occupational structure of Britain 1379-1911</em>, <a href="https://www.campop.geog.cam.ac.uk/research/occupations/">Cambridge Group for the History of Population and Social Structure</a>.</p>
-<p>Illustrating through exampes common steps for common thematic maps:</p>
+<p>We will illustrate throughout example common steps for thematic maps:</p>
 <ol style="list-style-type: decimal">
-<li>Get an appropriate blank map.</li>
-<li>Load and add “regular” data.</li>
+<li>Load spatial data.</li>
+<li>Load and add “regular” data-of-intrest.</li>
 <li>Manipulate (spatial) data.</li>
 <li>Plot map.</li>
 </ol>

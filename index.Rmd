@@ -5,31 +5,27 @@ author: "Maarten Hermans"
 
 This online walkthrough accompanies a 2h "show-and-tell" workshop on **making thematic (historical) maps with R**. 
 
-The worked examples demonistrate the quickest routes for getting your data in R and on a map, with a focus on showing how spatial data can be integrated in a familiar [tidyverse data-analysis workflow](https://www.tidyverse.org/). 
+The worked example using historical 1851 census-data from *The occupational structure of Britain 1379-1911*-project will demonstrate how to load, explore and plot spatial data, with a focus on showing how spatial data can be integrated in an "regular" R [tidyverse data-analysis workflow](https://www.tidyverse.org/). 
 
-The examples demonstrate mainly static maps, but interactive thematic maps are included as well. R packages demonistrated are primary
-
-* [sf](https://r-spatial.github.io/sf/) and [tmap](https://github.com/mtennekes/tmap#tmap-thematic-maps-in-r), together with 
-* [leaflet](https://rstudio.github.io/leaflet/), [ggplot](https://ggplot2.tidyverse.org/) and 
-* supporting packages such as [BelgiumMaps.StatBel](http://www.bnosac.be/index.php/blog/55-belgiummaps-statbel-r-package-with-administrative-boundaries-of-belgium) and [eurostat](https://ropengov.github.io/eurostat/index.html).  
+The examples demonstrate mainly static maps, but interactive thematic maps are included as well. R packages demonistrated are primary [tmap](https://github.com/mtennekes/tmap#tmap-thematic-maps-in-r) and [mapview](https://r-spatial.github.io/mapview/).
 
 Intended audience is basic R users (or those interested in seeing what R can do), who wish integrate spatial data into their "regular" (exploratory) data-analysis workflow, or who need a quick map. More advanced [GIS](https://en.wikipedia.org/wiki/Geographic_information_system)-topics such as projection fall outside of the scope. 
 
 The material and examples are structured along the basic steps you generally take when making thematic maps:
 
 0. [Motivating examples](00_start_examples.html) of static and interactive thematic maps.
-1. [Get an appropriate blank map](01_get_maps.html) to visualise your data on, e.g. from Belgium, Europe or the world.
+1. [Load spatial (map) data](01_get_maps.html) to visualise your data on.
 2. [Load and add](02_add_data.html) the data-of-interest you wish to visualise.
 3. Jointly [manipulate](03_manipulate.html) your spatial and "regular" data.
-4. Finally, [plot and tweak your map](04_plot.html). E.g. choosing color palettes, multiple maps, styling, etc.
+4. Finally, [plot and tweak your map](04_plot.html).
 
 I like [hearing from you](https://mhermans.net/#contact) if this walkthrough has been useful somehow, if something is not working or can be improved, or if you are interested in a workshop. 
 
 # Download the material
 
-You can copy-past the code snippets from the online pages, [download](https://github.com/mhermans/thematic-maps-r/archive/master.zip) (25MB) the entire set of material, or [clone from Github](https://github.com/mhermans/thematic-maps-r).
+You can copy-past the code snippets from these online pages, [download](https://github.com/mhermans/historical-maps-r/archive/master.zip) the entire set of material, or [clone from Github](https://github.com/mhermans/historical-maps-r).
 
-Opening the file `thematic_maps_with_r.Rproj` in the downloaded folder launches an Rstudio-project, after which you should be able to open, adapt, and run the Rmarkdown notebooks containing the examples (files ending in .Rmd).
+Opening the file `historical-maps-r.Rproj` in the downloaded folder launches an Rstudio-project, after which you should be able to open, adapt, and run the Rmarkdown notebooks containing the examples (files ending in .Rmd).
 
 
 # Setup
@@ -40,6 +36,7 @@ Opening the file `thematic_maps_with_r.Rproj` in the downloaded folder launches 
 
 ```{r, eval=FALSE}
 install.packages('rmarkdown')
+install.packages('tidyr')
 install.packages('here')
 install.packages('sf')
 install.packages('tmap')
@@ -52,4 +49,6 @@ install.packages('tmaptools')
 install.packages('stringr')
 install.packages('readr')
 install.packages('ggplot2')
+install.packages('janitor')
+install.packages('scales')
 ```

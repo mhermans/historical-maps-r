@@ -52,7 +52,7 @@ mapview(districts, zcol = 'pct_prof')
 
 # Spatial manipulation on joint dataset
 
-Data-exploration: wat is R_DIV variable?
+Data-exploration: what is R_DIV variable?
 
 ```{r, message=FALSE, warning=FALSE}
 divisions <- districts %>%
@@ -87,3 +87,27 @@ mapview(nwestern, zcol = 'pct_secondary') + raillines
 ```
 
 
+```{r}
+map_manchester <- mapview(nwestern, zcol = 'pct_secondary') + raillines
+mapshot(map_manchester, url = here('output/map_manchester.html'))
+```
+
+```{r}
+# (1) load spatial data
+raillines <- st_read(here('data/source/census_1851_raillines/1851EngWalesScotRail_Lines.shp'))
+districts_spatial <- st_read(here('data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp')) %>%
+  mutate(CEN1 = as.numeric(as.character(CEN1)))
+
+# (2) load and add data-of-interest
+districts_data <- read_excel(here('data/census1851_districts_count.xlsx'))
+districts <- left_join(districts_spatial, districts_data, by = c('CEN1' = 'district_id'))
+
+# (3) manipulate data (select Manchester area)
+nwestern <- districts %>% filter(R_DIV == 'NORTH WESTERN')
+
+# export & share with collaborators, etc.
+map_manchester <- mapview(nwestern, zcol = 'pct_secondary') + raillines
+mapshot(map_manchester, url = here('output/map_manchester.html'))
+```
+
+Share with collaborators, presentation, e.g. [statistical sectors](https://mhermans.net/files/tmp/map_sectoren_basic.html).

@@ -306,27 +306,22 @@ $(document).ready(function () {
 
 
 <p>This online walkthrough accompanies a 2h “show-and-tell” workshop on <strong>making thematic (historical) maps with R</strong>.</p>
-<p>The worked examples demonistrate the quickest routes for getting your data in R and on a map, with a focus on showing how spatial data can be integrated in a familiar <a href="https://www.tidyverse.org/">tidyverse data-analysis workflow</a>.</p>
-<p>The examples demonstrate mainly static maps, but interactive thematic maps are included as well. R packages demonistrated are primary</p>
-<ul>
-<li><a href="https://r-spatial.github.io/sf/">sf</a> and <a href="https://github.com/mtennekes/tmap#tmap-thematic-maps-in-r">tmap</a>, together with</li>
-<li><a href="https://rstudio.github.io/leaflet/">leaflet</a>, <a href="https://ggplot2.tidyverse.org/">ggplot</a> and</li>
-<li>supporting packages such as <a href="http://www.bnosac.be/index.php/blog/55-belgiummaps-statbel-r-package-with-administrative-boundaries-of-belgium">BelgiumMaps.StatBel</a> and <a href="https://ropengov.github.io/eurostat/index.html">eurostat</a>.</li>
-</ul>
+<p>The worked example using historical 1851 census-data from <em>The occupational structure of Britain 1379-1911</em>-project will demonstrate how to load, explore and plot spatial data, with a focus on showing how spatial data can be integrated in an “regular” R <a href="https://www.tidyverse.org/">tidyverse data-analysis workflow</a>.</p>
+<p>The examples demonstrate mainly static maps, but interactive thematic maps are included as well. R packages demonistrated are primary <a href="https://github.com/mtennekes/tmap#tmap-thematic-maps-in-r">tmap</a> and <a href="https://r-spatial.github.io/mapview/">mapview</a>.</p>
 <p>Intended audience is basic R users (or those interested in seeing what R can do), who wish integrate spatial data into their “regular” (exploratory) data-analysis workflow, or who need a quick map. More advanced <a href="https://en.wikipedia.org/wiki/Geographic_information_system">GIS</a>-topics such as projection fall outside of the scope.</p>
 <p>The material and examples are structured along the basic steps you generally take when making thematic maps:</p>
 <ol start="0" style="list-style-type: decimal">
 <li><a href="00_start_examples.html">Motivating examples</a> of static and interactive thematic maps.</li>
-<li><a href="01_get_maps.html">Get an appropriate blank map</a> to visualise your data on, e.g. from Belgium, Europe or the world.</li>
+<li><a href="01_get_maps.html">Load spatial (map) data</a> to visualise your data on.</li>
 <li><a href="02_add_data.html">Load and add</a> the data-of-interest you wish to visualise.</li>
 <li>Jointly <a href="03_manipulate.html">manipulate</a> your spatial and “regular” data.</li>
-<li>Finally, <a href="04_plot.html">plot and tweak your map</a>. E.g. choosing color palettes, multiple maps, styling, etc.</li>
+<li>Finally, <a href="04_plot.html">plot and tweak your map</a>.</li>
 </ol>
 <p>I like <a href="https://mhermans.net/#contact">hearing from you</a> if this walkthrough has been useful somehow, if something is not working or can be improved, or if you are interested in a workshop.</p>
 <div id="download-the-material" class="section level1">
 <h1>Download the material</h1>
-<p>You can copy-past the code snippets from the online pages, <a href="https://github.com/mhermans/thematic-maps-r/archive/master.zip">download</a> (25MB) the entire set of material, or <a href="https://github.com/mhermans/thematic-maps-r">clone from Github</a>.</p>
-<p>Opening the file <code>thematic_maps_with_r.Rproj</code> in the downloaded folder launches an Rstudio-project, after which you should be able to open, adapt, and run the Rmarkdown notebooks containing the examples (files ending in .Rmd).</p>
+<p>You can copy-past the code snippets from these online pages, <a href="https://github.com/mhermans/historical-maps-r/archive/master.zip">download</a> the entire set of material, or <a href="https://github.com/mhermans/historical-maps-r">clone from Github</a>.</p>
+<p>Opening the file <code>historical-maps-r.Rproj</code> in the downloaded folder launches an Rstudio-project, after which you should be able to open, adapt, and run the Rmarkdown notebooks containing the examples (files ending in .Rmd).</p>
 </div>
 <div id="setup" class="section level1">
 <h1>Setup</h1>
@@ -336,6 +331,7 @@ $(document).ready(function () {
 <li>Run commands below to install required R-packages.</li>
 </ol>
 <pre class="r"><code>install.packages(&#39;rmarkdown&#39;)
+install.packages(&#39;tidyr&#39;)
 install.packages(&#39;here&#39;)
 install.packages(&#39;sf&#39;)
 install.packages(&#39;tmap&#39;)
@@ -347,7 +343,9 @@ install.packages(&#39;rgdal&#39;)
 install.packages(&#39;tmaptools&#39;)
 install.packages(&#39;stringr&#39;)
 install.packages(&#39;readr&#39;)
-install.packages(&#39;ggplot2&#39;)</code></pre>
+install.packages(&#39;ggplot2&#39;)
+install.packages(&#39;janitor&#39;)
+install.packages(&#39;scales&#39;)</code></pre>
 </div>
 
 
