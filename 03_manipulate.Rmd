@@ -6,14 +6,14 @@ output:
         toc_float: TRUE
 ---
 
-Two types of data-manipulation: 
+After obtaining (step 2) a single dataframe with spatial data and data-of-interest, we can manipulate this dataframe before plotting on a map and during explorative data-visualisation. Two types of data-manipulation: 
 
 1. spatial data-manipulations: spatial cropping, union, aggregation, etc.
 2. 'regular' data-manipulations: combine categories, calculate percentage of population, etc.
 
-... but same syntax and in **one** dataframe.
+... but crucially, using R these manipulations use the **same (tidyverse) syntax and are done within one dataframe**, encouraging data exploration of spatial dimensions together with other data-dimensions (trends, quantities, time-dimensions, etc.).
 
-PS: always an option, do (2) in SAS, Stata, etc. before reading and joining data (previous step).
+FYI, instead of doing the 'regular' data-manipulations in R, you can also do this in SAS, Stata, Excel, etc. if you are (currently) more familiar with those, before reading and joining data (previous step).
 
 ```{r, message=FALSE, warning=FALSE}
 library(here)
@@ -41,11 +41,14 @@ districts <- left_join(districts_spatial, districts_data, by = c('CEN1' = 'distr
 # Data-manipulation on joint dataset
 
 ```{r, message=FALSE, warning=FALSE}
+# datamanipulations such as calculating percentages still work on the single, joint dataset
+#  e.g. percentage of those employed in professions
 districts <- districts %>%
   mutate(pct_prof = tertiary_services_professions / total)
 ```
 
 ```{r, message=FALSE, warning=FALSE}
+# Nearly 50% employed in professions in central districts of London
 mapview(districts, zcol = 'pct_prof')
 ```
 
@@ -55,26 +58,34 @@ mapview(districts, zcol = 'pct_prof')
 Data-exploration: what is R_DIV variable?
 
 ```{r, message=FALSE, warning=FALSE}
+# get al tally of the R_DIV variable
 divisions <- districts %>%
   group_by(R_DIV) %>%
   tally()
 ```
 
 ```{r, message=FALSE, warning=FALSE}
+# 11 divisions in the spatial data
 divisions
 ```
 
+Notice: the group-and-tally step has not aggregated data by counting districts per divisions, it has also **merged those districts into new geometry-objects** at the division-level. These are new spatial boundaries, not present in the original data, demonstrating the interchangability of spatial and 'regular' data-operations.
 
 ```{r, message=FALSE, warning=FALSE}
+# view the newly created/aggregated spatial division boundaries
 mapview(divisions)
 ```
 
 # Spatial / data-manipulation: select districts in Manchester-region
 
+Mousing-over on the interactive map above, we can see that the division around the Manchester-area is called "North Western". This information allows us to filter the districts down to those that are situated in that division.
+
 ```{r, message=FALSE, warning=FALSE}
 nwestern <- districts %>%
   filter(R_DIV == 'NORTH WESTERN')
 ```
+
+Notice that a 'regular' data-operation such as `filter()` works as well on subsetting spatial data, as subsetting 'regular' data.
 
 ```{r, message=FALSE, warning=FALSE}
 # static plot of Manchester districts
@@ -86,13 +97,20 @@ qtm(nwestern, fill = 'pct_secondary')
 mapview(nwestern, zcol = 'pct_secondary') + raillines
 ```
 
+# Export interactive map for sharing
 
 ```{r}
 map_manchester <- mapview(nwestern, zcol = 'pct_secondary') + raillines
 mapshot(map_manchester, url = here('output/map_manchester.html'))
 ```
 
-```{r}
+Generated HTML-file 'map_manchester.html' + supporting files (folder 'map_manchester_files') is in folder 'output'.
+
+# Summary: load, manipulate, interactively visualise, and share in 7 lines
+
+The exported HTML-file of the interactive mapview()-generated map, can be shared with collaborators, put on a project-site, used during a presentation, etc. to furter explore or demonstrated the spatial data in context.
+
+```{r, eval=FALSE}
 # (1) load spatial data
 raillines <- st_read(here('data/source/census_1851_raillines/1851EngWalesScotRail_Lines.shp'))
 districts_spatial <- st_read(here('data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp')) %>%
@@ -109,5 +127,3 @@ nwestern <- districts %>% filter(R_DIV == 'NORTH WESTERN')
 map_manchester <- mapview(nwestern, zcol = 'pct_secondary') + raillines
 mapshot(map_manchester, url = here('output/map_manchester.html'))
 ```
-
-Share with collaborators, presentation, e.g. [statistical sectors](https://mhermans.net/files/tmp/map_sectoren_basic.html).

@@ -13,7 +13,7 @@
 <meta name="author" content="Maarten Hermans" />
 
 
-<title>Making thematic (historical) maps with R</title>
+<title>Making thematic historical maps with R</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -299,25 +299,25 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Making thematic (historical) maps with R</h1>
+<h1 class="title toc-ignore">Making thematic historical maps with R</h1>
 <h4 class="author">Maarten Hermans</h4>
 
 </div>
 
 
-<p>This online walkthrough accompanies a 2h “show-and-tell” workshop on <strong>making thematic (historical) maps with R</strong>.</p>
-<p>The worked example using historical 1851 census-data from <em>The occupational structure of Britain 1379-1911</em>-project will demonstrate how to load, explore and plot spatial data, with a focus on showing how spatial data can be integrated in an “regular” R <a href="https://www.tidyverse.org/">tidyverse data-analysis workflow</a>.</p>
-<p>The examples demonstrate mainly static maps, but interactive thematic maps are included as well. R packages demonistrated are primary <a href="https://github.com/mtennekes/tmap#tmap-thematic-maps-in-r">tmap</a> and <a href="https://r-spatial.github.io/mapview/">mapview</a>.</p>
-<p>Intended audience is basic R users (or those interested in seeing what R can do), who wish integrate spatial data into their “regular” (exploratory) data-analysis workflow, or who need a quick map. More advanced <a href="https://en.wikipedia.org/wiki/Geographic_information_system">GIS</a>-topics such as projection fall outside of the scope.</p>
-<p>The material and examples are structured along the basic steps you generally take when making thematic maps:</p>
+<p>This online walkthrough and material accompanies a two hour “show-and-tell” workshop on <strong>making thematic (historical) maps with R</strong>.</p>
+<p>The worked example uses historical 1851 census-data from <em>The occupational structure of Britain 1379-1911</em>-<a href="https://www.campop.geog.cam.ac.uk/research/occupations/">project</a> to demonstrate how to load, explore and plot spatial data, with a focus on showing how spatial data can be integrated in an “regular” R <a href="https://www.tidyverse.org/">tidyverse data-analysis workflow</a>.</p>
+<p>The walkthrough demonstrate how to make static maps using the R library <a href="https://github.com/mtennekes/tmap#tmap-thematic-maps-in-r">tmap</a>, and interactive maps for data-exploration using the <a href="https://r-spatial.github.io/mapview/">mapview</a> library.</p>
+<p>The intended audience are basic R users – or those interested in seeing what R can do – who wish integrate spatial data into their “regular” (exploratory) data-analysis workflow. More advanced <a href="https://en.wikipedia.org/wiki/Geographic_information_system">GIS</a>-topics such as projection fall outside of the scope.</p>
+<p>The material and examples are structured along the four basic steps you generally take when making thematic maps:</p>
 <ol start="0" style="list-style-type: decimal">
-<li><a href="00_start_examples.html">Motivating examples</a> of static and interactive thematic maps.</li>
+<li><a href="00_introduction.html">Introduction and motivating examples</a> of static and interactive thematic maps.</li>
 <li><a href="01_get_maps.html">Load spatial (map) data</a> to visualise your data on.</li>
 <li><a href="02_add_data.html">Load and add</a> the data-of-interest you wish to visualise.</li>
 <li>Jointly <a href="03_manipulate.html">manipulate</a> your spatial and “regular” data.</li>
 <li>Finally, <a href="04_plot.html">plot and tweak your map</a>.</li>
 </ol>
-<p>I like <a href="https://mhermans.net/#contact">hearing from you</a> if this walkthrough has been useful somehow, if something is not working or can be improved, or if you are interested in a workshop.</p>
+<p>I like <a href="https://mhermans.net/#contact">hearing from you</a> if this walkthrough and/or has been useful somehow, if something is not working or can be improved, or if you are interested in a workshop.</p>
 <div id="download-the-material" class="section level1">
 <h1>Download the material</h1>
 <p>You can copy-past the code snippets from these online pages, <a href="https://github.com/mhermans/historical-maps-r/archive/master.zip">download</a> the entire set of material, or <a href="https://github.com/mhermans/historical-maps-r">clone from Github</a>.</p>
@@ -343,8 +343,6 @@ install.packages(&#39;rgdal&#39;)
 install.packages(&#39;tmaptools&#39;)
 install.packages(&#39;stringr&#39;)
 install.packages(&#39;readr&#39;)
-install.packages(&#39;ggplot2&#39;)
-install.packages(&#39;janitor&#39;)
 install.packages(&#39;scales&#39;)</code></pre>
 </div>
 

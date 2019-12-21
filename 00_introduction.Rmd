@@ -9,10 +9,10 @@ output:
 
 # Some motivating examples
 
-* Example we'll be working towards today: map of railways & secondary sector employment in England 1851.
-* Example from [previous workshop](https://workshop.mhermans.net/thematic-maps-r/04_plot.html#add_layers_using_objects) on thematic maps.
-* Basic examples of maps  using R package `tmap` [are online](https://github.com/mtennekes/tmap).
-* Example [online press release](https://hiva.kuleuven.be/nl/nieuws/nieuwsitems/bruto-jobtoename-en-afname-in-beeld-voor-de-Belgische-regios-en-provincies) HIVA - KU Leuven with interactive map.
+* Example we'll be working towards in this workshop: map of railways & secondary sector employment in England 1851 in [static](output/england_1851_map_final.png) and [interactive](output/map_manchester.html) versions.
+* Some examples of thematic maps from a [previous workshop](https://workshop.mhermans.net/thematic-maps-r/04_plot.html#add_layers_using_objects).
+* More examples made with `tmap`, the R package we will be demonstrating [are online](https://github.com/mtennekes/tmap).
+* Example [online press release](https://hiva.kuleuven.be/nl/nieuws/nieuwsitems/bruto-jobtoename-en-afname-in-beeld-voor-de-Belgische-regios-en-provincies) HIVA - KU Leuven with a interactive map on KU Leuven-website.
 
 
 # Why (not) R for making maps?
@@ -29,17 +29,17 @@ Alternative for example: dedicated GUI-driven GIS-software such as [QGis](https:
 
 With R ecosystem & programming background:
 
-* Stronger focus on 'data science': collecting, reading, manipulating, visualising, communicating about data beyond the 'traditional' reporting of statistical analyses. More info: [tidyverse](https://www.tidyverse.org/), ["[R for Data Science](https://r4ds.had.co.nz/)", e.g. gangen]. 
-* Spatial data is treated in analysis like regular dataframe (with a 'geometry' column): spatial analysis & "regular" analysis(skilss) move closer [more info: [simple features-standard in R](https://r-spatial.github.io/sf/index.html)
+* Stronger focus on 'data science': collecting, reading, manipulating, visualising, communicating about data beyond the 'traditional' reporting of statistical analyses. More info: [tidyverse](https://www.tidyverse.org/), ["[R for Data Science](https://r4ds.had.co.nz/)". 
+* Spatial data is treated in analysis like a regular dataframe (with a 'geometry' column): spatial analysis & "regular" analysis(skilss) move closer [more info: [simple features-standard in R](https://r-spatial.github.io/sf/index.html)
 
 Consequences:
 
 * Enables quick spatial data-exploration in single program & work-flow.
 * Novel ways of approaching, using, presenting (esp. digital, large scale) datasources.
 
-Example: interactive [map with historical map layers](https://mhermans.net/post/mapping-leuvense-gangen/).
+Example of novel applications using R to combine quering API's, spatial operations, visualising on externally provided interactive maps, etc.: [Exploring historical maps and spatial data with R and OpenStreetMap](https://mhermans.net/post/mapping-leuvense-gangen/).
 
-# Worked example: rail & industry in 1851 England
+# Worked example in this workshop: rail and industry in 1851 England
 
 Data-source: *The occupational structure of Britain 1379-1911*, [Cambridge Group for the History of Population and Social Structure](https://www.campop.geog.cam.ac.uk/research/occupations/).
 

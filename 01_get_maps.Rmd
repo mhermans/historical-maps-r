@@ -12,23 +12,22 @@ We need to have "blank maps" to color in as thematic maps, and optionally spatia
 1. Dowloaded file [focus here].
 2. Provided through an R-package [see [other workshop](https://workshop.mhermans.net/thematic-maps-r/01_get_maps.html).
 
-Various formats for spatial data possible: Shapefile, GeoJSON, KML, GPX-tracks, etc.
+Various formats for spatial data possible: Shapefile, GeoJSON, KML, GPX-tracks, etc. Downloading or receiving a Shapefile will likely be the most common scenario for historians.
 
-Recommended: Use `st_read()` function from the `sf` library, as it returns a spatial feature object and is based on [GDAL](https://gdal.org/): hard to find a format not covered.
+Recommended: Use `st_read()` function from the `sf` library, as it returns a spatial feature object and is based on [GDAL](https://gdal.org/): hard to find a format that is not covered.
 
 Points of attention:
 
-* We want sf-objects. Frequently already in the right format, if not convert using [`st_as_sf()`](https://r-spatial.github.io/sf/reference/st_as_sf.html).
-* Pay attention to included identifier for merging.
+* For further manipulation we want objects supported by the `sf`-library. When loading spatial data through `st_read()`, it is in the correct format, if another route is needed spatial objects can be converted with [`st_as_sf()`](https://r-spatial.github.io/sf/reference/st_as_sf.html).
+* Pay attention to the included identifier in the spatial dataset (NIS-code, census-code, etc.) for merging other data in later steps.
 
 ```{r, message=FALSE, warning=FALSE}
 # load general packages used below
 library(dplyr)   # tidyverse datamanipulation library
 library(sf)      # tidyverse spatial features library
-library(janitor) # utility function clean_names()
-library(mapview)
-library(tmap)
-library(here)
+library(mapview) # library for interactive exploration of spatial data
+library(tmap)    # library for thematic maps
+library(here)    # optional helper library for loading data without absolute paths
 ```
 
 # Example: load railway tracks
@@ -38,10 +37,12 @@ raillines <- st_read(here('data/source/census_1851_raillines/1851EngWalesScotRai
 ```
 
 ```{r}
+# quick interactive look using mapview() from mapview library
 mapview(raillines)
 ```
 
 ```{r}
+# quick static thematic map using qtm() from tmap library
 qtm(raillines)
 ```
 

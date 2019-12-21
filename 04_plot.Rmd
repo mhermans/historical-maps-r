@@ -13,9 +13,10 @@ Recommended R packages for plotting :
 * [ggplot](https://ggplot2.tidyverse.org/): most popular package for datavis in R, recent and growing support for maps.  [static, not discussed here]
 * [leaflet](https://rstudio.github.io/leaflet/): flexible, general purpose package for interactive maps. [interactive, not discussed here]
 
-Learn more:
+The `tmap`-package is recommended for the likely use cases for static maps historians will encounter, get from reviewers, etc. Relatively easy to get a quick thematic map, as demonstrated by `qtm()`, but also extremely large range of options to to build and tweak final map.
 
-* Documentation tmap: press F1 and [online](https://github.com/mtennekes/tmap).
+Learn more / questions on maps:
+
 * Books: "[An Introduction to R for Spatial Analysis and Mapping](https://books.google.be/books?id=iwJ6DwAAQBAJ) (2018)", "[Geocomputation with R](https://geocompr.robinlovelace.net/]) (full-text)", "[Data Visualization. A practical introduction](https://socviz.co/)", "[Fundamentals of Data Visualization](https://serialmentor.com/dataviz/geospatial-data.html) (full-text).
 * [Questions on Stackoverflow](https://stackoverflow.com).
 * [Datacamp courses](https://www.datacamp.com/).
@@ -29,6 +30,7 @@ Learn more:
 
 Some resources on tmap:
 
+* Documentation tmap: press F1 with cursor on a tmap-function in Rstudio, and look [online](https://github.com/mtennekes/tmap).
 * [Getting started with tmap](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html)
 * https://geocompr.robinlovelace.net/adv-map.html
 * Background and walkthrough: [Tennekes, M., 2018, tmap: Thematic Maps in R, Journal of Statistical Software, 84(6), 1-39](https://www.jstatsoft.org/article/view/v084i06).
@@ -57,13 +59,21 @@ districts_data <- read_excel(here('data/census1851_districts_count.xlsx'))
 districts <- left_join(districts_spatial, districts_data, by = c('CEN1' = 'district_id'))
 ```
 
+# Layered building of thematic maps
+
+`qtm()` is quick and perfect to get the first view, or an initial map to share. But if you need to go futher with tweaking, styling, or more complex maps, building a thematic maps works well with the "layered" approach of tmap for building a thematic map.
+
+Below an non-exhaustive example of building a map in such a way. One important topic not discussed is choise of breaks and the color palette for the fill of a thematic map: this need to be a concious choice for clear presentation and/or to avoid possible bias in presentation. More examples and advise on this [in the previous workshop](https://workshop.mhermans.net/thematic-maps-r/04_plot.html#binning_and_color_palettes).
 
 ```{r, message=FALSE, warning=FALSE}
+# add spatial (shape) data and a first layer showing the boundaries
 tm_shape(districts) +
   tm_borders()
 ```
 
 ```{r, message=FALSE, warning=FALSE}
+# add another first layer, the fill of the districts instead of their boundaries
+#  tip: sometimes _less_ elements and details such as lines on a map, can make presentation _more_ clear.
 tm_shape(districts) +
   tm_fill('pct_secondary')
 ```
@@ -74,14 +84,17 @@ tm_shape(districts) +
 
 
 ```{r, message=FALSE, warning=FALSE}
+# building in different layers, allows for detailed, seperate styling
 tm_shape(districts) +
-  tm_borders(col = 'white', lwd = 0.5) +
+  tm_borders(col = 'white', lwd = 0.5) + # small white border is less distracting then full black on a map
   tm_fill('pct_secondary', title = 'Emploment secondary sector')
 ```
 
 
 
 ```{r, message=FALSE, warning=FALSE}
+# building in layers allows for stacking different layers with different 
+#  spatial features, in this case we add another layer with the railways.
 tm_shape(districts) +
   tm_borders(col = 'white', lwd = 0.5) +
   tm_fill('pct_secondary', title = 'Emploment secondary sector') +
@@ -89,12 +102,15 @@ tm_shape(districts) +
   tm_lines(col = 'grey60')
 ```
 
+TYhe railway spatial data are not spatial boundaries (polygons) that can be filled, but lines, so we use `tm_lines()`. Similarly, for e.g. adding sizeble points representing quantities you can use `tm_dots()` or `tm_bubbles()`
+
 
 ```{r, warning=FALSE, error=FALSE}
+# subset/filter to the Manchester-area
 nwestern <- districts %>%
   filter(R_DIV == 'NORTH WESTERN')
   
-
+# tm_text() allows to add a layer with labels for the districts
 tm_shape(nwestern) +
   tm_fill(col = 'pct_secondary') +
   tm_text('district_name', size = .5)
@@ -102,6 +118,8 @@ tm_shape(nwestern) +
 
 
 # Putting it all together
+
+`tmap` contains a wealth of other functions (and their options) to futher tweak and style you map. Here we demonistrate addional options for the legend, adding a source below, etc.
 
 ```{r, message=FALSE, warning=FALSE}
 map_final <- tm_shape(districts) +
@@ -121,6 +139,8 @@ tmap_save(map_final, here('output/england_1851_map_final.png'), width = 1920, he
 ```
 
 # Cherry-on-top: tmap interactive mode
+
+You can switch between static and interactive mode, and re-plot a map to explore interactively. Good for looking at details that might be unclear on the static map, and you need to filter or deal with (eg. [smaller inset map](https://workshop.mhermans.net/thematic-maps-r/questions_answers.html#how_can_i_join_brussels_as_an_inset-map) ).
 
 ```{r, warning=FALSE, message=FALSE}
 tmap_mode("view")

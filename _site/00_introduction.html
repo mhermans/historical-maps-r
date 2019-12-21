@@ -376,10 +376,10 @@ div.tocify {
 <div id="some-motivating-examples" class="section level1">
 <h1>Some motivating examples</h1>
 <ul>
-<li>Example we’ll be working towards today: map of railways &amp; secondary sector employment in England 1851.</li>
-<li>Example from <a href="https://workshop.mhermans.net/thematic-maps-r/04_plot.html#add_layers_using_objects">previous workshop</a> on thematic maps.</li>
-<li>Basic examples of maps using R package <code>tmap</code> <a href="https://github.com/mtennekes/tmap">are online</a>.</li>
-<li>Example <a href="https://hiva.kuleuven.be/nl/nieuws/nieuwsitems/bruto-jobtoename-en-afname-in-beeld-voor-de-Belgische-regios-en-provincies">online press release</a> HIVA - KU Leuven with interactive map.</li>
+<li>Example we’ll be working towards in this workshop: map of railways &amp; secondary sector employment in England 1851 in <a href="output/england_1851_map_final.png">static</a> and <a href="output/map_manchester.html">interactive</a> versions.</li>
+<li>Some examples of thematic maps from a <a href="https://workshop.mhermans.net/thematic-maps-r/04_plot.html#add_layers_using_objects">previous workshop</a>.</li>
+<li>More examples made with <code>tmap</code>, the R package we will be demonstrating <a href="https://github.com/mtennekes/tmap">are online</a>.</li>
+<li>Example <a href="https://hiva.kuleuven.be/nl/nieuws/nieuwsitems/bruto-jobtoename-en-afname-in-beeld-voor-de-Belgische-regios-en-provincies">online press release</a> HIVA - KU Leuven with a interactive map on KU Leuven-website.</li>
 </ul>
 </div>
 <div id="why-not-r-for-making-maps" class="section level1">
@@ -417,18 +417,18 @@ div.tocify {
 <p>Alternative for example: dedicated GUI-driven GIS-software such as <a href="https://www.qgis.org/">QGis</a>.</p>
 <p>With R ecosystem &amp; programming background:</p>
 <ul>
-<li>Stronger focus on ‘data science’: collecting, reading, manipulating, visualising, communicating about data beyond the ‘traditional’ reporting of statistical analyses. More info: <a href="https://www.tidyverse.org/">tidyverse</a>, [“<a href="https://r4ds.had.co.nz/">R for Data Science</a>”, e.g. gangen].</li>
-<li>Spatial data is treated in analysis like regular dataframe (with a ‘geometry’ column): spatial analysis &amp; “regular” analysis(skilss) move closer [more info: <a href="https://r-spatial.github.io/sf/index.html">simple features-standard in R</a></li>
+<li>Stronger focus on ‘data science’: collecting, reading, manipulating, visualising, communicating about data beyond the ‘traditional’ reporting of statistical analyses. More info: <a href="https://www.tidyverse.org/">tidyverse</a>, [“<a href="https://r4ds.had.co.nz/">R for Data Science</a>”.</li>
+<li>Spatial data is treated in analysis like a regular dataframe (with a ‘geometry’ column): spatial analysis &amp; “regular” analysis(skilss) move closer [more info: <a href="https://r-spatial.github.io/sf/index.html">simple features-standard in R</a></li>
 </ul>
 <p>Consequences:</p>
 <ul>
 <li>Enables quick spatial data-exploration in single program &amp; work-flow.</li>
 <li>Novel ways of approaching, using, presenting (esp. digital, large scale) datasources.</li>
 </ul>
-<p>Example: interactive <a href="https://mhermans.net/post/mapping-leuvense-gangen/">map with historical map layers</a>.</p>
+<p>Example of novel applications using R to combine quering API’s, spatial operations, visualising on externally provided interactive maps, etc.: <a href="https://mhermans.net/post/mapping-leuvense-gangen/">Exploring historical maps and spatial data with R and OpenStreetMap</a>.</p>
 </div>
-<div id="worked-example-rail-industry-in-1851-england" class="section level1">
-<h1>Worked example: rail &amp; industry in 1851 England</h1>
+<div id="worked-example-in-this-workshop-rail-and-industry-in-1851-england" class="section level1">
+<h1>Worked example in this workshop: rail and industry in 1851 England</h1>
 <p>Data-source: <em>The occupational structure of Britain 1379-1911</em>, <a href="https://www.campop.geog.cam.ac.uk/research/occupations/">Cambridge Group for the History of Population and Social Structure</a>.</p>
 <p>We will illustrate throughout example common steps for thematic maps:</p>
 <ol style="list-style-type: decimal">

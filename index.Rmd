@@ -1,25 +1,25 @@
 ---
-title: "Making thematic (historical) maps with R"
+title: "Making thematic historical maps with R"
 author: "Maarten Hermans"
 ---
 
-This online walkthrough accompanies a 2h "show-and-tell" workshop on **making thematic (historical) maps with R**. 
+This online walkthrough and material accompanies a two hour "show-and-tell" workshop on **making thematic (historical) maps with R**. 
 
-The worked example using historical 1851 census-data from *The occupational structure of Britain 1379-1911*-project will demonstrate how to load, explore and plot spatial data, with a focus on showing how spatial data can be integrated in an "regular" R [tidyverse data-analysis workflow](https://www.tidyverse.org/). 
+The worked example uses historical 1851 census-data from *The occupational structure of Britain 1379-1911*-[project](https://www.campop.geog.cam.ac.uk/research/occupations/) to demonstrate how to load, explore and plot spatial data, with a focus on showing how spatial data can be integrated in an "regular" R [tidyverse data-analysis workflow](https://www.tidyverse.org/).
 
-The examples demonstrate mainly static maps, but interactive thematic maps are included as well. R packages demonistrated are primary [tmap](https://github.com/mtennekes/tmap#tmap-thematic-maps-in-r) and [mapview](https://r-spatial.github.io/mapview/).
+The walkthrough demonstrate how to make static maps using the R library [tmap](https://github.com/mtennekes/tmap#tmap-thematic-maps-in-r), and interactive maps for data-exploration using the [mapview](https://r-spatial.github.io/mapview/) library.
 
-Intended audience is basic R users (or those interested in seeing what R can do), who wish integrate spatial data into their "regular" (exploratory) data-analysis workflow, or who need a quick map. More advanced [GIS](https://en.wikipedia.org/wiki/Geographic_information_system)-topics such as projection fall outside of the scope. 
+The intended audience are basic R users -- or those interested in seeing what R can do -- who wish integrate spatial data into their "regular" (exploratory) data-analysis workflow. More advanced [GIS](https://en.wikipedia.org/wiki/Geographic_information_system)-topics such as projection fall outside of the scope. 
 
-The material and examples are structured along the basic steps you generally take when making thematic maps:
+The material and examples are structured along the four basic steps you generally take when making thematic maps:
 
-0. [Motivating examples](00_start_examples.html) of static and interactive thematic maps.
+0. [Introduction and motivating examples](00_introduction.html) of static and interactive thematic maps.
 1. [Load spatial (map) data](01_get_maps.html) to visualise your data on.
 2. [Load and add](02_add_data.html) the data-of-interest you wish to visualise.
 3. Jointly [manipulate](03_manipulate.html) your spatial and "regular" data.
 4. Finally, [plot and tweak your map](04_plot.html).
 
-I like [hearing from you](https://mhermans.net/#contact) if this walkthrough has been useful somehow, if something is not working or can be improved, or if you are interested in a workshop. 
+I like [hearing from you](https://mhermans.net/#contact) if this walkthrough and/or has been useful somehow, if something is not working or can be improved, or if you are interested in a workshop. 
 
 # Download the material
 
@@ -48,7 +48,5 @@ install.packages('rgdal')
 install.packages('tmaptools')
 install.packages('stringr')
 install.packages('readr')
-install.packages('ggplot2')
-install.packages('janitor')
 install.packages('scales')
 ```

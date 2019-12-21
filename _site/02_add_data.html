@@ -373,12 +373,12 @@ div.tocify {
 </div>
 
 
-<p>We have a spatial dataframe (step 1), now we want to add our data-of-interest to visualise on the thematic map. Two steps:</p>
+<p>We have a spatial dataframe (see previous step 1), now we want to load and add our data-of-interest to visualise on the thematic map:</p>
 <ol style="list-style-type: decimal">
 <li>Read in data-of-interst into R.</li>
 <li>Join data-of-interest with the spatial dataframe.</li>
 </ol>
-<p>Crucial for linking: have a variable/column in your that contains the appropriate spatial identifier. E.g. Census-identifer, NIS-code, NUTS-code, etc.</p>
+<p>Crucial for linking spatial data and data-of-interest: have a variable/column in your that contains the appropriate spatial identifier. E.g. Census-identifer, NIS-code, NUTS-code, etc.</p>
 <p>How to read in your data depends on the format, three recommended R-packages should cover mosts posibilities:</p>
 <ul>
 <li><a href="https://readr.tidyverse.org/">readr</a>: read/write plain text formats such as CSV, TXT, etc.</li>
@@ -417,10 +417,11 @@ census_data %&gt;%
 </div>
 <div id="explore-data-of-interest" class="section level1">
 <h1>Explore data-of-interest</h1>
-<p>Exploring and manipulating data uses tidyverse “verbs”: filter, select, group_by, join, tally, mutate, etc.</p>
+<p>Exploring and manipulating data uses <a href="https://www.tidyverse.org/">tidyverse</a> “verbs”: filter, select, group_by, join, tally, mutate, etc.</p>
 <div id="occupations-gender" class="section level2">
 <h2>Occupations &amp; gender</h2>
-<pre class="r"><code>census_data %&gt;%
+<pre class="r"><code># group records by gender, an tally up all persons
+census_data %&gt;%
   group_by(sex) %&gt;%
   tally(occupation_count)</code></pre>
 <pre><code>## # A tibble: 2 x 2
@@ -428,7 +429,8 @@ census_data %&gt;%
 ##   &lt;chr&gt;   &lt;dbl&gt;
 ## 1 F     4775509
 ## 2 M     4399377</code></pre>
-<pre class="r"><code>census_data %&gt;%
+<pre class="r"><code># group by gender &amp; and occupational category and tally
+census_data %&gt;%
   group_by(sex, pst_a_label) %&gt;%
   tally(occupation_count) %&gt;%
   spread(sex, n)</code></pre>
@@ -442,7 +444,8 @@ census_data %&gt;%
 ## 5 tertiary_dealers                18140   87801
 ## 6 tertiary_sellers                47306  119377
 ## 7 tertiary_services_professions  957968  792939</code></pre>
-<pre class="r"><code>census_data %&gt;%
+<pre class="r"><code># add a column with the percentage of women for each occupational group
+census_data %&gt;%
   group_by(sex, pst_a_label) %&gt;%
   tally(occupation_count) %&gt;%
   spread(sex, n) %&gt;%
@@ -482,11 +485,14 @@ census_data %&gt;%
 </div>
 <div id="percentage-secondary-sector-workers-per-district" class="section level2">
 <h2>Percentage secondary-sector workers per district</h2>
-<pre class="r"><code>districts_data &lt;- census_data %&gt;%
+<pre class="r"><code># make a new dataframe named districts_data with for
+#  each district the counts per occupational category
+districts_data &lt;- census_data %&gt;%
   group_by(district_id, district_name, pst_a_label) %&gt;%
   tally(occupation_count) %&gt;%
   spread(pst_a_label, n)
 
+# calculate the percentage of people employed in secondary sector
 districts_data &lt;- districts_data %&gt;%
   mutate(total = primary + secondary + tertiary_dealers + tertiary_sellers + tertiary_services_professions + sector_unspecific + no_occupation) %&gt;%
   mutate(pct_secondary = secondary / total)
@@ -512,18 +518,19 @@ districts_data</code></pre>
 </div>
 <div id="join-spatial-data-districts-and-data-of-interest-occupation-data" class="section level1">
 <h1>Join spatial data (districts) and data-of interest (occupation-data)</h1>
-<p>Join spatial and non-spatial dataframes using general dataframe-join functions (online <a href="https://stat545.com/bit001_dplyr-cheatsheet.html">cheatsheet for types of joins</a>).</p>
+<p>Join spatial and non-spatial dataframes using general dataframe-join functions, cf. online <a href="https://stat545.com/bit001_dplyr-cheatsheet.html">cheatsheet for types of joins</a>.</p>
 <pre class="r"><code># Example syntax:
 library(dplyr)
 data &lt;- left_join(spatial_data, data_of_interest, by = &quot;identifier&quot;)
 data &lt;- left_join(spatial_data, data_of_interest, by = c(&quot;spatial_identifier&quot; = &quot;data_identifier&quot;))</code></pre>
-<p>Example: join spatial data on districts, and calculated data and percentages on occupations.</p>
+<p>Example: join spatial data on districts, adding the counts and calculated percentages on occupations on district-level.</p>
 <pre class="r"><code># load spatial data on districts
 districts_spatial &lt;- st_read(here(&#39;data/source/census_1851_districts/1851EngWalesRegistrationDistrict.shp&#39;)) %&gt;%
   mutate(CEN1 = as.numeric(as.character(CEN1))) # make sure identifiers are the same type as in the district data</code></pre>
 <pre class="r"><code># add population data on district-level to the spatial data-set
 districts &lt;- left_join(districts_spatial, districts_data, by = c(&#39;CEN1&#39; = &#39;district_id&#39;))</code></pre>
-<pre class="r"><code>districts</code></pre>
+<pre class="r"><code># single dataframe containing variables + spatial information (district boundaries) in geometry-column
+districts</code></pre>
 <pre><code>## # A tibble: 1,198 x 17
 ##     CEN1 R_DIST R_CTY R_DIVNO R_DIV R_CTRY district_name no_occupation
 ##    &lt;dbl&gt; &lt;fct&gt;  &lt;fct&gt; &lt;fct&gt;   &lt;fct&gt; &lt;fct&gt;  &lt;chr&gt;                 &lt;dbl&gt;
@@ -544,7 +551,8 @@ districts &lt;- left_join(districts_spatial, districts_data, by = c(&#39;CEN1&#3
 </div>
 <div id="test-display-joined-data-on-a-map" class="section level1">
 <h1>Test: display joined data on a map</h1>
-<pre class="r"><code>qtm(districts, fill = &#39;total&#39;)</code></pre>
+<pre class="r"><code># fill in the district boundaries with the total count of persons 
+qtm(districts, fill = &#39;total&#39;)</code></pre>
 <p><img src="02_add_data_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 

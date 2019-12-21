@@ -7,12 +7,12 @@ output:
       toc_float: yes
 ---
 
-We have a spatial dataframe (step 1), now we want to add our data-of-interest to visualise on the thematic map. Two steps:
+We have a spatial dataframe (see previous step 1), now we want to load and add our data-of-interest to visualise on the thematic map:
 
 1. Read in data-of-interst into R.
 2. Join data-of-interest with the spatial dataframe.
 
-Crucial for linking: have a variable/column in your that contains the appropriate spatial identifier. E.g. Census-identifer, NIS-code, NUTS-code, etc.
+Crucial for linking spatial data and data-of-interest: have a variable/column in your that contains the appropriate spatial identifier. E.g. Census-identifer, NIS-code, NUTS-code, etc. 
 
 How to read in your data depends on the format, three recommended R-packages should cover mosts posibilities: 
 
@@ -45,11 +45,12 @@ census_data %>%
 
 # Explore data-of-interest
 
-Exploring and manipulating data uses tidyverse "verbs": filter, select, group_by, join, tally, mutate, etc. 
+Exploring and manipulating data uses [tidyverse](https://www.tidyverse.org/) "verbs": filter, select, group_by, join, tally, mutate, etc. 
 
 ## Occupations & gender
 
 ```{r, message=FALSE, warning=FALSE}
+# group records by gender, an tally up all persons
 census_data %>%
   group_by(sex) %>%
   tally(occupation_count)
@@ -57,6 +58,7 @@ census_data %>%
 
 
 ```{r, message=FALSE, warning=FALSE}
+# group by gender & and occupational category and tally
 census_data %>%
   group_by(sex, pst_a_label) %>%
   tally(occupation_count) %>%
@@ -64,6 +66,7 @@ census_data %>%
 ```
 
 ```{r, message=FALSE, warning=FALSE}
+# add a column with the percentage of women for each occupational group
 census_data %>%
   group_by(sex, pst_a_label) %>%
   tally(occupation_count) %>%
@@ -84,11 +87,14 @@ census_data %>%
 ## Percentage secondary-sector workers per district
 
 ```{r, message=FALSE, warning=FALSE}
+# make a new dataframe named districts_data with for
+#  each district the counts per occupational category
 districts_data <- census_data %>%
   group_by(district_id, district_name, pst_a_label) %>%
   tally(occupation_count) %>%
   spread(pst_a_label, n)
 
+# calculate the percentage of people employed in secondary sector
 districts_data <- districts_data %>%
   mutate(total = primary + secondary + tertiary_dealers + tertiary_sellers + tertiary_services_professions + sector_unspecific + no_occupation) %>%
   mutate(pct_secondary = secondary / total)
@@ -99,7 +105,7 @@ districts_data
 
 # Join spatial data (districts) and data-of interest (occupation-data)
 
-Join spatial and non-spatial dataframes using general dataframe-join functions (online [cheatsheet for types of joins](https://stat545.com/bit001_dplyr-cheatsheet.html)).
+Join spatial and non-spatial dataframes using general dataframe-join functions, cf. online [cheatsheet for types of joins](https://stat545.com/bit001_dplyr-cheatsheet.html).
 
 ```{r, eval=FALSE}
 # Example syntax:
@@ -108,7 +114,7 @@ data <- left_join(spatial_data, data_of_interest, by = "identifier")
 data <- left_join(spatial_data, data_of_interest, by = c("spatial_identifier" = "data_identifier"))
 ```
 
-Example: join spatial data on districts, and calculated data and percentages on occupations.
+Example: join spatial data on districts, adding the counts and calculated percentages on occupations on district-level.
 
 ```{r, message=FALSE, warning=FALSE, results = 'hide'}
 # load spatial data on districts
@@ -122,12 +128,14 @@ districts <- left_join(districts_spatial, districts_data, by = c('CEN1' = 'distr
 ```
 
 ```{r, message=FALSE, warning=FALSE}
+# single dataframe containing variables + spatial information (district boundaries) in geometry-column
 districts
 ```
 
 # Test: display joined data on a map
 
 ```{r, message=FALSE, warning=FALSE}
+# fill in the district boundaries with the total count of persons 
 qtm(districts, fill = 'total')
 ```
 
